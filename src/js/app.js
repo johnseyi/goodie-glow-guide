@@ -788,6 +788,16 @@ const Views = {
                 Need Help? Chat with Goodie
               </a>
 
+              <button
+                type="button"
+                class="btn btn--ghost btn--full"
+                onclick="GoodieApp.exportDay(${dayNumber})"
+                aria-label="Print Day ${dayNumber} routine as PDF"
+              >
+                <svg data-lucide="printer" aria-hidden="true"></svg>
+                Print This Day
+              </button>
+
             </aside>
           </div>
         </div>
@@ -1039,9 +1049,9 @@ const Views = {
               <svg data-lucide="message-circle" aria-hidden="true"></svg>
               Share with Goodie
             </a>
-            <button class="btn btn--secondary" onclick="window.print()" type="button">
+            <button class="btn btn--secondary" onclick="GoodieApp.exportProgress()" type="button">
               <svg data-lucide="download" aria-hidden="true"></svg>
-              Export Report
+              Download Progress Report
             </button>
           </div>
 
@@ -2135,8 +2145,184 @@ const GoodieApp = {
   _updateFooterYear() {
     const el = document.getElementById('footer-year');
     if (el) el.textContent = new Date().getFullYear();
+  },
+
+  // ── PDF / Print: Progress Report ────────────
+  exportProgress() {
+    const completed   = Progress.getCompletedCount();
+    const pct         = Progress.getCompletionPercentage();
+    const streak      = Progress.calculateStreak();
+    const startDate   = Progress.getState().startDate;
+    const today       = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    const startedOn   = startDate
+      ? new Date(startDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+      : 'Not recorded';
+    const expectedEnd = startDate
+      ? new Date(new Date(startDate).getTime() + 30 * 24 * 60 * 60 * 1000)
+          .toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+      : '—';
+
+    const weekRows = content.weeks.map(w => {
+      const wp   = Progress.getWeekProgress(w.week);
+      const wpct = wp.total ? Math.round((wp.done / wp.total) * 100) : 0;
+      const status = wp.done === wp.total ? 'Complete ✓'
+                   : wp.done > 0          ? 'In Progress'
+                   :                        'Not started';
+      return `<tr>
+        <td>Week ${w.week}</td>
+        <td>${w.title}</td>
+        <td>${w.focus}</td>
+        <td>${wp.done} / ${wp.total}</td>
+        <td>${wpct}%</td>
+        <td>${status}</td>
+      </tr>`;
+    }).join('');
+
+    const calHTML = content.weeks.map(w => {
+      const dots = w.days.map(d => {
+        const done    = Progress.isDayComplete(d);
+        const current = d === Progress.getCurrentDay();
+        const cls     = done ? 'pcd--done' : current ? 'pcd--now' : '';
+        return `<span class="pcd ${cls}">${d}</span>`;
+      }).join('');
+      return `<div class="pcr"><span class="pcw">W${w.week}</span>${dots}</div>`;
+    }).join('');
+
+    const photoHTML = [
+      { day: 1,  label: 'Before — Day 1'   },
+      { day: 10, label: 'Week 2 — Day 10'  },
+      { day: 20, label: 'Week 3 — Day 20'  },
+      { day: 30, label: 'After — Day 30'   }
+    ].map(slot => {
+      const photo = Storage.get('photo_day' + slot.day);
+      return photo
+        ? `<div class="pp"><img src="${photo}" alt="${slot.label}" class="pp__img"><p class="pp__lbl">${slot.label}</p></div>`
+        : `<div class="pp pp--empty"><div class="pp__ph"></div><p class="pp__lbl">${slot.label}</p></div>`;
+    }).join('');
+
+    const el = document.createElement('div');
+    el.id = 'print-overlay';
+    el.innerHTML = `
+      <div class="pr">
+        <header class="pr-hd">
+          <p class="pr-hd__brand">Goodie Glow Guide</p>
+          <p class="pr-hd__sub">Progress Report &bull; ${today}</p>
+        </header>
+
+        <div class="pr-stats">
+          <div class="pr-stat"><span class="pr-stat__v">${completed}</span><span class="pr-stat__l">Days Done</span></div>
+          <div class="pr-stat"><span class="pr-stat__v">${pct}%</span><span class="pr-stat__l">Complete</span></div>
+          <div class="pr-stat"><span class="pr-stat__v">${streak}</span><span class="pr-stat__l">Streak</span></div>
+          <div class="pr-stat"><span class="pr-stat__v">${30 - completed}</span><span class="pr-stat__l">Remaining</span></div>
+        </div>
+        <p class="pr-meta">Started: ${startedOn} &nbsp;&bull;&nbsp; Expected completion: ${expectedEnd}</p>
+
+        <h2 class="pr-h2">Weekly Breakdown</h2>
+        <table class="pr-tbl">
+          <thead><tr><th>Week</th><th>Theme</th><th>Focus</th><th>Done</th><th>%</th><th>Status</th></tr></thead>
+          <tbody>${weekRows}</tbody>
+        </table>
+
+        <h2 class="pr-h2">30-Day Calendar</h2>
+        <div class="pr-cal">${calHTML}</div>
+        <p class="pr-cal-leg">
+          <span class="pcd pcd--done">1</span> Completed &nbsp;
+          <span class="pcd pcd--now">1</span> Current &nbsp;
+          <span class="pcd">1</span> Not yet
+        </p>
+
+        <h2 class="pr-h2 pr-pb">Photo Journey</h2>
+        <div class="pr-photos">${photoHTML}</div>
+
+        <footer class="pr-ft">
+          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @its.goodie
+        </footer>
+      </div>`;
+
+    document.body.appendChild(el);
+    window.addEventListener('afterprint', function _clean() {
+      if (el.parentNode) el.parentNode.removeChild(el);
+      window.removeEventListener('afterprint', _clean);
+    });
+    window.print();
+    trackEvent('progress', 'export_pdf', 'progress_report');
+  },
+
+  // ── PDF / Print: Daily Routine ───────────────
+  exportDay(dayNumber) {
+    const day = content.days.find(d => d.day === dayNumber);
+    if (!day) return;
+
+    const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const buildStep = step => `
+      <li class="ps">
+        <span class="ps__box">&#9633;</span>
+        <div class="ps__body">
+          <strong>${_cap(step.step.replace(/-/g, ' '))} &mdash; ${step.product}</strong>
+          <span class="ps__dur">${step.duration}</span>
+          <p class="ps__inst">${step.instructions}</p>
+        </div>
+      </li>`;
+
+    const remedyHTML = day.naturalRemedy ? `
+      <h2 class="pr-h2">Natural Treatment: ${day.naturalRemedy.name}</h2>
+      <p><strong>When:</strong> ${day.naturalRemedy.timing}</p>
+      <p><strong>You'll need:</strong> ${day.naturalRemedy.ingredients.join(', ')}</p>
+      <ol class="pr-ol">${day.naturalRemedy.instructions.map(i => `<li>${i}</li>`).join('')}</ol>
+      <p class="pr-remedy-note">${day.naturalRemedy.benefits}</p>` : '';
+
+    const avoidItems = day.avoid.map(a => `<li>${a}</li>`).join('');
+
+    const el = document.createElement('div');
+    el.id = 'print-overlay';
+    el.innerHTML = `
+      <div class="pr">
+        <header class="pr-hd">
+          <p class="pr-hd__brand">Goodie Glow Guide</p>
+          <p class="pr-hd__sub">Day ${dayNumber} Routine &bull; ${today}</p>
+        </header>
+
+        <h1 class="pr-day-title">Day ${dayNumber} &mdash; ${day.title}</h1>
+        <p class="pr-day-meta">Week ${day.week} &bull; ${day.phase}</p>
+
+        <h2 class="pr-h2">&#9728; Morning Routine</h2>
+        <ul class="pr-steps">${day.morning.map(s => buildStep(s)).join('')}</ul>
+
+        <h2 class="pr-h2">&#9790; Night Routine</h2>
+        <ul class="pr-steps">${day.night.map(s => buildStep(s)).join('')}</ul>
+
+        ${remedyHTML}
+
+        <div class="pr-2col">
+          <div>
+            <h2 class="pr-h2">Today's Tip</h2>
+            <p class="pr-tip">${day.tip}</p>
+          </div>
+          <div>
+            <h2 class="pr-h2">Skip These Today</h2>
+            <ul class="pr-avoid">${avoidItems}</ul>
+          </div>
+        </div>
+
+        <footer class="pr-ft">
+          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @its.goodie
+        </footer>
+      </div>`;
+
+    document.body.appendChild(el);
+    window.addEventListener('afterprint', function _clean() {
+      if (el.parentNode) el.parentNode.removeChild(el);
+      window.removeEventListener('afterprint', _clean);
+    });
+    window.print();
+    trackEvent('day', 'print_routine', 'day_' + dayNumber);
   }
 };
+
+
+// Expose GoodieApp globally so inline onclick handlers can call it
+window.GoodieApp = GoodieApp;
 
 
 // ─────────────────────────────────────────────
