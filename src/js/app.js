@@ -1097,82 +1097,495 @@ const Views = {
 
   // ── PRODUCTS PAGE ──────────────────────────
   renderProducts() {
-    const productCards = Object.values(content.products).map(p => `
-      <div class="card animate-slide-up" role="listitem">
-        <p class="label mb-2">${p.use}</p>
-        <h3 style="font-size:var(--text-lg);margin-bottom:var(--space-2)">${p.name}</h3>
-        <p class="text-secondary text-sm">${p.use}</p>
+    // Rich product definitions (keyed to match content.products ids)
+    const RICH = {
+      facewash: {
+        category: 'Cleanser', color: '#8B6F47', initial: 'CW',
+        desc: 'A brightening gel cleanser that lifts away impurities and excess oil while Vitamin C starts evening your skin tone from Day 1.',
+        howToUse: 'Wet face, apply a small coin-sized amount, massage in gentle circular motions for 60 seconds, rinse thoroughly with lukewarm water. Pat dry — never rub. Use morning and evening.',
+        waitTime: 'Apply toner or next step immediately after patting dry.',
+        ingredients: ['Vitamin C (Ascorbic Acid) — brightens dark spots, boosts collagen, fades hyperpigmentation', 'Aloe Vera — soothes irritation and locks in moisture after cleansing', 'Glycerin — draws water into the skin and prevents post-cleanse dryness'],
+        bestFor: 'All skin types, especially oily and combination. Targets uneven tone, dark spots, and dullness.',
+        pairs: 'Pairs perfectly with everything in the Goodie range.',
+        tips: ['Use lukewarm water only — hot water strips your moisture barrier', 'Rinse for a full 30 seconds; leftover residue clogs pores', 'Skin feels tight after? You\'re using too much — halve the amount']
+      },
+      toner: {
+        category: 'Toner', color: '#6B8E6F', initial: 'TO',
+        desc: 'A clarifying, pore-refining toner that balances your skin\'s pH after cleansing and preps it to absorb serums more effectively.',
+        howToUse: 'After cleansing, apply a small amount to a cotton pad and swipe gently across face and neck. Or press a few drops directly into skin with clean hands. Use morning and evening.',
+        waitTime: 'Wait 30 seconds, then apply serum.',
+        ingredients: ['Niacinamide (B3) — minimises pores, regulates oil production', 'Witch Hazel — natural astringent, reduces redness and blemishes', 'Hyaluronic Acid — immediately hydrates and plumps skin'],
+        bestFor: 'Oily, acne-prone, and enlarged-pore concerns. Great for balancing combination skin.',
+        pairs: 'Use before all serums. Safe with Vitamin C and Niacinamide serums.',
+        tips: ['Don\'t skip this — it restores your skin\'s pH after cleansing so actives work better', 'Less cotton pad pressure = less irritation. Gentle swipes only', 'Can be used as a hydration spritz throughout the day']
+      },
+      vitaminCSerum: {
+        category: 'Serum (AM)', color: '#D4AF37', initial: 'VC',
+        desc: 'A potent brightening serum that fades dark spots, evens skin tone, and gives you that lit-from-within glow. Your morning secret weapon.',
+        howToUse: 'After toner in the morning, apply 3–4 drops to face and neck. Press gently into skin — don\'t rub. Always follow with moisturiser, then SPF.',
+        waitTime: 'Wait 60 seconds before applying moisturiser to let the serum absorb.',
+        ingredients: ['Vitamin C 15% — clinical brightening at the effective concentration', 'Ferulic Acid — stabilises Vitamin C and boosts its effectiveness', 'Vitamin E — antioxidant protection, supports skin repair'],
+        bestFor: 'All skin types targeting hyperpigmentation, dark spots, post-acne marks, and dullness.',
+        pairs: 'Use in the morning. Pairs safely with Niacinamide (the old myth about mixing them is false).',
+        tips: ['Store in a cool, dark place — Vitamin C oxidises in heat and light', 'If your serum turns orange/brown, it\'s oxidised — replace it', 'Don\'t use this at night; use the Niacinamide serum instead']
+      },
+      niacinamideSerum: {
+        category: 'Serum (PM)', color: '#527056', initial: 'NI',
+        desc: 'A multi-tasking night serum that regulates oil, shrinks pores, fades dark marks, and strengthens your skin barrier while you sleep.',
+        howToUse: 'After toner in the evening, apply 3–4 drops to face and neck. Press into skin. Follow with moisturiser. Use nightly from Week 2 onwards.',
+        waitTime: 'Wait 60 seconds before moisturiser.',
+        ingredients: ['Niacinamide 10% — pore-minimising, oil-regulating, brightening powerhouse', 'Zinc PCA — controls sebum, reduces breakouts', 'Panthenol (B5) — deep hydration and barrier repair'],
+        bestFor: 'Oily, acne-prone, and combination skin. Targets large pores, oiliness, and post-acne marks.',
+        pairs: 'Safe with Vitamin C (use them at different times: VC in AM, Niacinamide in PM). Pairs perfectly with moisturiser.',
+        tips: ['If you experience any flushing or redness, reduce to every other night', 'This is your most hardworking night product — don\'t skip it', 'The 10% concentration is the sweet spot — effective without irritating']
+      },
+      moisturizer: {
+        category: 'Moisturiser', color: '#A8896A', initial: 'MO',
+        desc: 'A lightweight, non-greasy lotion that seals in your serum, strengthens your moisture barrier, and keeps skin soft and plump all day.',
+        howToUse: 'After serum (morning and evening), apply a small amount to face and neck. Use upward strokes. In the morning, follow with SPF. At night, this is your final step.',
+        waitTime: 'AM: apply SPF immediately after. PM: no further steps needed.',
+        ingredients: ['Ceramides — rebuild and strengthen the skin barrier', 'Shea Butter — deeply nourishing, seals in moisture', 'Squalane — lightweight oil that mimics skin\'s natural sebum'],
+        bestFor: 'All skin types. Essential for dry and dehydrated skin. Even oily skin needs moisturiser.',
+        pairs: 'Always the second-to-last step in the morning (before SPF) and the final step at night.',
+        tips: ['Apply while skin is still slightly damp from serum — seals in more moisture', 'A little goes a long way — pea-sized to 5p coin is enough', 'Don\'t skip because your skin feels oily — skipping causes MORE oil production']
+      },
+      sunscreen: {
+        category: 'SPF 50', color: '#2E6DA4', initial: 'SP',
+        desc: 'A broad-spectrum SPF 50 that protects against UVA (ageing, dark spots) and UVB (burning) rays. The final — and most critical — morning step.',
+        howToUse: 'MORNING ONLY. Apply generously to face, neck, and any exposed skin as the very last step after moisturiser. Two finger-lengths is the minimum for full protection. Reapply every 2 hours outdoors.',
+        waitTime: 'No waiting — apply immediately after moisturiser.',
+        ingredients: ['Zinc Oxide — physical UV blocker, gentle on sensitive skin', 'Tinosorb S — chemical UV filter, photostable protection', 'Hyaluronic Acid — hydration so it doesn\'t feel heavy'],
+        bestFor: 'Everyone, every day. Non-negotiable for anyone targeting dark spots, hyperpigmentation, or anti-ageing.',
+        pairs: 'Always the last step in the morning. Never skip, even indoors or on cloudy days.',
+        tips: ['80% of UV rays pass through clouds — wear it every day', 'UVA rays (dark spots, ageing) come through windows too', 'Not using enough SPF is as bad as not wearing it — be generous']
+      },
+      eyeCream: {
+        category: 'Eye Treatment', color: '#8B6F47', initial: 'EC',
+        desc: 'A targeted eye cream that tackles dark circles, puffiness, and fine lines in the delicate under-eye area using gentle, proven actives.',
+        howToUse: 'After moisturiser, use your ring finger to gently tap (never rub) a grain-of-rice amount around the orbital bone. Use morning and evening.',
+        waitTime: 'Apply as final step or immediately before moisturiser.',
+        ingredients: ['Caffeine — depuffs by constricting blood vessels, reduces dark circles', 'Peptides — stimulate collagen, reduce fine lines', 'Vitamin K — strengthens capillary walls, fades dark circles'],
+        bestFor: 'Dark circles, puffiness, fine lines, and dehydration around the eye area.',
+        pairs: 'Keep separate from your regular face products — eye skin is 10x thinner and needs gentler care.',
+        tips: ['Ring finger only — it applies the least pressure automatically', 'Tap, don\'t rub — pulling the eye area causes premature lines', 'Store in the fridge for extra depuffing in the morning']
+      },
+      lipBalm: {
+        category: 'Lip Treatment', color: '#C47A2B', initial: 'LB',
+        desc: 'A rich Shea Butter lip balm that heals dry, flaky lips and keeps them soft and moisturised. The perfect final step of your night routine.',
+        howToUse: 'Apply generously to lips as the very last step of your night routine. Can also be used throughout the day. Gently exfoliate lips first with a soft toothbrush for best absorption.',
+        waitTime: 'This is the last step — no waiting needed.',
+        ingredients: ['Shea Butter — intensely nourishing, heals cracked lips', 'Vitamin E — antioxidant protection, promotes healing', 'Beeswax — forms a protective barrier to lock in moisture'],
+        bestFor: 'Dry, cracked, and pigmented lips. Great for anyone who wants a fuller appearance.',
+        pairs: 'Can be layered over any other lip product. Safe to use morning and night.',
+        tips: ['Apply before bed every night without fail for transformative results in 2 weeks', 'Don\'t lick your lips — it makes dryness worse', 'Gently remove dead skin with a soft toothbrush before applying for maximum effect']
+      }
+    };
+
+    // Build product cards
+    const productCards = Object.entries(RICH).map(([key, p], i) => {
+      const base    = content.products[key] || {};
+      const ingredients = p.ingredients.map(ing => `<li>${ing}</li>`).join('');
+      const tips        = p.tips.map(t => `<li>${t}</li>`).join('');
+      return `
+        <article class="product-card card animate-slide-up" style="animation-delay:${i * 60}ms" aria-label="${base.name || p.initial}">
+          <div class="product-card__header">
+            <div class="product-card__avatar" style="background:${p.color}" aria-hidden="true">
+              <span>${p.initial}</span>
+            </div>
+            <div class="product-card__info">
+              <span class="badge product-badge--${p.category.toLowerCase().replace(/\s+/g, '-')}">${p.category}</span>
+              <h3 class="product-card__name">${base.name || key}</h3>
+              <p class="product-card__desc">${p.desc}</p>
+            </div>
+          </div>
+          <div class="product-card__sections">
+            <details class="product-section">
+              <summary><svg data-lucide="play-circle" aria-hidden="true"></svg> How to Use <svg data-lucide="chevron-down" class="product-section__arrow" aria-hidden="true"></svg></summary>
+              <div class="product-section__body">
+                <p>${p.howToUse}</p>
+                <p class="product-section__wait"><svg data-lucide="clock" aria-hidden="true"></svg> ${p.waitTime}</p>
+              </div>
+            </details>
+            <details class="product-section">
+              <summary><svg data-lucide="leaf" aria-hidden="true"></svg> Key Ingredients <svg data-lucide="chevron-down" class="product-section__arrow" aria-hidden="true"></svg></summary>
+              <div class="product-section__body">
+                <ul class="product-section__list">${ingredients}</ul>
+              </div>
+            </details>
+            <details class="product-section">
+              <summary><svg data-lucide="users" aria-hidden="true"></svg> Best For <svg data-lucide="chevron-down" class="product-section__arrow" aria-hidden="true"></svg></summary>
+              <div class="product-section__body">
+                <p>${p.bestFor}</p>
+                <p class="product-section__pairs"><strong>Pairs with:</strong> ${p.pairs}</p>
+              </div>
+            </details>
+            <details class="product-section">
+              <summary><svg data-lucide="sparkles" aria-hidden="true"></svg> Tips &amp; Tricks <svg data-lucide="chevron-down" class="product-section__arrow" aria-hidden="true"></svg></summary>
+              <div class="product-section__body">
+                <ul class="product-section__list product-section__tips">${tips}</ul>
+              </div>
+            </details>
+          </div>
+        </article>`;
+    }).join('');
+
+    // Application order flow
+    const amSteps = [
+      { label: 'Cleanser',   color: '#8B6F47' },
+      { label: 'Toner',      color: '#6B8E6F' },
+      { label: 'Vit C Serum',color: '#D4AF37' },
+      { label: 'Moisturiser',color: '#A8896A' },
+      { label: 'SPF 50',     color: '#2E6DA4' }
+    ];
+    const pmSteps = [
+      { label: 'Cleanser',   color: '#8B6F47' },
+      { label: 'Toner',      color: '#6B8E6F' },
+      { label: 'Niacinamide',color: '#527056' },
+      { label: 'Eye Cream',  color: '#8B6F47' },
+      { label: 'Moisturiser',color: '#A8896A' }
+    ];
+    const buildFlow = (steps, icon, label) => `
+      <div class="routine-flow">
+        <div class="routine-flow__label">
+          <svg data-lucide="${icon}" aria-hidden="true"></svg> ${label}
+        </div>
+        <div class="routine-flow__steps" role="list">
+          ${steps.map((s, i) => `
+            <div class="routine-flow__step" role="listitem">
+              <div class="routine-flow__bubble" style="background:${s.color}">
+                <span>${i + 1}</span>
+              </div>
+              <p class="routine-flow__name">${s.label}</p>
+            </div>
+            ${i < steps.length - 1 ? '<svg data-lucide="arrow-right" class="routine-flow__arrow" aria-hidden="true"></svg>' : ''}
+          `).join('')}
+        </div>
+      </div>`;
+
+    // Pairing guide
+    const pairings = [
+      { combo: 'Vitamin C + Niacinamide',      icon: 'check-circle', type: 'good', note: 'Safe together! The old myth is debunked. Use Vit C in AM, Niacinamide in PM.' },
+      { combo: 'Hyaluronic Acid + Everything', icon: 'check-circle', type: 'good', note: 'Universal hydrator — pairs with every product in the routine.' },
+      { combo: 'Toner + Any Serum',            icon: 'check-circle', type: 'good', note: 'Toner first, always. It primes skin to absorb serums better.' },
+      { combo: 'SPF + Makeup',                 icon: 'check-circle', type: 'good', note: 'Apply SPF as a base before foundation. Wait 2 minutes before makeup.' },
+      { combo: 'Multiple acids at once',        icon: 'alert-triangle', type: 'warn', note: 'Don\'t combine this routine with other acid products (AHA/BHA/retinol) — it will cause irritation.' },
+      { combo: 'Random product mixing',         icon: 'alert-triangle', type: 'warn', note: 'Stick to Goodie products for 30 days. Adding unknowns makes it impossible to track what\'s working.' }
+    ];
+    const pairingCards = pairings.map(p => `
+      <div class="pairing-item pairing-item--${p.type}">
+        <svg data-lucide="${p.icon}" aria-hidden="true"></svg>
+        <div>
+          <strong>${p.combo}</strong>
+          <p>${p.note}</p>
+        </div>
       </div>`).join('');
 
     this._render(`
-      <section class="section" aria-labelledby="products-heading">
+      <!-- ── PAGE HEADER ── -->
+      <div class="page-header">
         <div class="container">
-          <div class="text-center mb-8">
-            <span class="label">Goodie Products</span>
-            <h1 id="products-heading" class="mt-2">Your Product Guide</h1>
-            <p class="lead" style="max-width:520px;margin:0 auto">Every product in this guide is a Goodie product. Here's exactly what each one does and when to use it.</p>
-          </div>
-          <div class="grid stagger" role="list">
-            ${productCards}
-          </div>
-          <div class="contact-strip mt-8" style="border-radius:var(--radius-lg)">
-            <h2>Need to Order Products?</h2>
-            <p>Chat with us directly to place your order.</p>
-            <div class="cluster">
-              <a href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I%20want%20to%20order%20the%20Glow%20Guide%20products." class="btn btn--whatsapp" target="_blank" rel="noopener noreferrer">
-                <svg data-lucide="message-circle" aria-hidden="true"></svg>
-                Order via WhatsApp
-              </a>
-            </div>
+          <span class="label" style="color:rgba(255,255,255,0.6)">Your Skincare Arsenal</span>
+          <h1 style="color:white;margin-bottom:var(--space-2)">Your Product Guide</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:520px;margin:0">
+            Everything you need to know about every Goodie product in your kit — ingredients, techniques, and pro tips.
+          </p>
+        </div>
+      </div>
+
+      <!-- ── APPLICATION ORDER ── -->
+      <div style="background:var(--color-bg-card);border-bottom:1px solid var(--color-border);padding:var(--space-8) 0">
+        <div class="container">
+          <h2 style="font-size:var(--text-lg);margin-bottom:var(--space-6)">
+            <svg data-lucide="layers" style="display:inline;vertical-align:middle;width:20px;height:20px;margin-right:6px;color:var(--color-primary)" aria-hidden="true"></svg>
+            Order of Application
+          </h2>
+          <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-5)">Thinnest → thickest consistency. Each product preps the next.</p>
+          <div class="stack" style="--stack-gap:var(--space-5)">
+            ${buildFlow(amSteps, 'sun', 'Morning Routine')}
+            ${buildFlow(pmSteps, 'moon', 'Evening Routine')}
           </div>
         </div>
-      </section>
+      </div>
+
+      <!-- ── PRODUCT CARDS ── -->
+      <div class="section" style="padding:var(--space-10) 0">
+        <div class="container">
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-6)">All 8 Products</h2>
+          <div class="products-grid">
+            ${productCards}
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PAIRING GUIDE ── -->
+      <div style="background:var(--color-bg-muted);padding:var(--space-10) 0">
+        <div class="container">
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-2)">
+            <svg data-lucide="git-merge" style="display:inline;vertical-align:middle;width:20px;height:20px;margin-right:6px;color:var(--color-primary)" aria-hidden="true"></svg>
+            Product Pairing Guide
+          </h2>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6)">What works well together — and what to avoid.</p>
+          <div class="pairing-grid">${pairingCards}</div>
+        </div>
+      </div>
+
+      <!-- ── ORDER CTA ── -->
+      <div class="contact-strip">
+        <div class="container">
+          <h2>Need to Order or Restock?</h2>
+          <p>Message us directly — we deliver across Nigeria and Uganda.</p>
+          <div class="cluster" style="justify-content:center">
+            <a href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I%20want%20to%20order%20the%20Glow%20Guide%20products." class="btn btn--whatsapp" target="_blank" rel="noopener noreferrer">
+              <svg data-lucide="message-circle" aria-hidden="true"></svg>
+              Order via WhatsApp
+            </a>
+            <a href="https://instagram.com/its.goodie" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
+              <svg data-lucide="heart" aria-hidden="true"></svg>
+              @its.goodie
+            </a>
+          </div>
+        </div>
+      </div>
     `);
   },
 
   // ── HELP PAGE ──────────────────────────────
   renderHelp() {
-    const faqs = [
-      { q: "My skin is breaking out — should I stop?", a: "No! Breakouts in the first 2 weeks often mean your skin is detoxing and adjusting. Keep going, be gentle, don't pick. If breakouts persist past Week 2 or are severe, chat with us on WhatsApp." },
-      { q: "I missed a day — should I restart?", a: "Never restart. Just pick up where you left off. One missed day doesn't undo your progress. The routine is cumulative — every day you show up builds on the previous ones." },
-      { q: "My skin feels tight and dry after cleansing.", a: "Use less product and cooler water. Pat dry immediately and apply moisturiser while your skin is still damp. If it persists, you may be over-cleansing — once in the morning is fine on low-activity days." },
-      { q: "Can I add extra products I already own?", a: "We recommend sticking to the Goodie products for the full 30 days. Adding unknown products makes it harder to know what's working. After Day 30, introduce new products one at a time." },
-      { q: "The turmeric mask left my face yellow!", a: "Rinse again with a small amount of cleanser and cool water. The yellow tint is temporary and fades within 30–60 minutes. Next time, add a teaspoon of gram flour (chickpea flour) to the mask — it helps bind the turmeric and reduce staining." },
-      { q: "Is sunscreen really necessary on cloudy days?", a: "Yes — 80% of UV rays pass through clouds. UVA rays (the ones that cause dark spots and ageing) also come through windows. SPF every morning, every day, is the most impactful thing you can do for your skin long-term." }
+    const FAQ_CATEGORIES = [
+      {
+        id: 'getting-started',
+        title: 'Getting Started',
+        icon: 'play-circle',
+        items: [
+          { q: 'I just received my products. Where do I start?', a: 'Go to Day 1 and take your before photos first — lighting, no filter, three angles. Then follow the Day 1 morning routine. Everything in the guide is ordered for you; just follow the daily prompts.' },
+          { q: 'Do I need all the products before I start?', a: 'No. The absolute minimum to start is cleanser, moisturiser, and sunscreen. Add other products as you get them. The guide will prompt you when each new product is introduced.' },
+          { q: 'Can I skip days or do them out of order?', a: 'You can skip days — life happens! Just pick up from the next day rather than restarting. The guide is cumulative, not a strict countdown. What matters is consistency over perfection.' },
+          { q: 'What if I\'ve never had a skincare routine before?', a: 'Perfect timing. Start slow — if 5 steps feels like too much in Week 1, do just cleanser + moisturiser + SPF. Build from there. Your skin will adapt within 7–10 days.' }
+        ]
+      },
+      {
+        id: 'product-questions',
+        title: 'Product Questions',
+        icon: 'package',
+        items: [
+          { q: 'My skin feels tight after cleansing. What\'s wrong?', a: 'Three possible causes: using too much product, rinsing with hot water, or leaving product on too long. Use a 50p coin-sized amount, lukewarm water only, and apply moisturiser while skin is still slightly damp.' },
+          { q: 'My products are pilling (rolling off my face). Why?', a: 'You\'re applying the next step too quickly or using too much product. Wait 30–60 seconds between layers, use less product, and pat — don\'t rub. Start with the thinnest consistency first.' },
+          { q: 'Can I use these products if I\'m pregnant or breastfeeding?', a: 'Our formulas are gentle and avoid high-risk ingredients. That said, always consult your doctor or dermatologist before starting any new skincare routine during pregnancy.' },
+          { q: 'I ran out of one product. Can I substitute it?', a: 'For cleanser and moisturiser, a plain gentle alternative is fine temporarily. For serums, skip that step rather than substituting — using the wrong concentration of actives can cause irritation. Contact us to restock quickly.' }
+        ]
+      },
+      {
+        id: 'skin-reactions',
+        title: 'Skin Reactions',
+        icon: 'alert-circle',
+        items: [
+          { q: 'I\'m breaking out more than before — should I stop?', a: 'Week 2–3 purging is completely normal and is actually a sign the products are working. Your skin is clearing out what was hiding underneath. Unless breakouts are painful or spreading to the neck/chest, keep going. If concerned, WhatsApp us a photo.' },
+          { q: 'My skin looks red and irritated. What do I do?', a: 'Stop all actives (serums) immediately. Use only cleanser and moisturiser for 3–5 days until your skin calms down. Then reintroduce one product at a time. If redness is severe or spreading, contact us right away: 08063214942.' },
+          { q: 'I\'m not seeing results after 2 weeks. Is it working?', a: 'Yes — but skin cell turnover takes 28 days. The real transformation shows from Day 15 onwards. Week 1–2 is your skin adjusting. Week 3–4 is when people start noticing a difference. Trust the process and take your progress photos.' },
+          { q: 'The Vitamin C serum stings slightly. Is that normal?', a: 'A mild tingle is normal for Vitamin C — it means it\'s working. A burning or lasting sting is not normal. If it burns: rinse immediately, check that your skin is fully dry before applying (apply to slightly damp skin can amplify actives), and try every other day to build tolerance.' }
+        ]
+      },
+      {
+        id: 'routine-questions',
+        title: 'Routine Questions',
+        icon: 'calendar',
+        items: [
+          { q: 'I forgot to do my routine yesterday. Am I starting over?', a: 'Never restart. One missed day means zero lost progress. Your skin has already absorbed and benefited from every previous day. Just continue from today and keep going.' },
+          { q: 'Can I wear makeup while doing the programme?', a: 'Absolutely. Apply makeup after your SPF in the morning. The key is thorough cleansing at night — double cleansing (micellar water first, then face wash) is ideal if you wear heavy makeup.' },
+          { q: 'What if I\'m travelling during the 30 days?', a: 'Pack your essentials in travel-size bottles: cleanser, moisturiser, SPF are non-negotiable. The serums are your "nice to have." A simplified routine on travel days is better than skipping entirely.' },
+          { q: 'Can I do the morning and night routine at the same time?', a: 'You can do morning and night products together in an emergency, but it\'s not ideal. SPF in particular is not for night use. If you miss morning, just do the night routine and pick up normally tomorrow.' }
+        ]
+      },
+      {
+        id: 'technical',
+        title: 'App & Technical',
+        icon: 'settings',
+        items: [
+          { q: 'My progress disappeared or won\'t save.', a: 'This is a browser storage issue. Check that cookies and local storage are enabled in your browser settings. Try opening the app in a fresh browser tab or a different browser (Chrome or Safari work best).' },
+          { q: 'My progress photos won\'t upload.', a: 'Photos should be under 2MB for best results. Try taking a fresh photo with your phone camera instead of uploading from your gallery. If it still fails, try a different browser.' },
+          { q: 'The app isn\'t loading on my phone.', a: 'Works best on Chrome (Android) or Safari (iOS). Make sure your browser is up to date. Try clearing your browser cache or opening in a new tab.' }
+        ]
+      }
     ];
 
-    const faqItems = faqs.map((faq, i) => `
-      <div class="card animate-slide-up" style="animation-delay:${i * 60}ms">
-        <h3 style="font-size:var(--text-base);margin-bottom:var(--space-3);display:flex;align-items:flex-start;gap:var(--space-2)">
-          <svg data-lucide="help-circle" class="icon-md icon-primary" style="flex-shrink:0;margin-top:2px" aria-hidden="true"></svg>
-          ${faq.q}
-        </h3>
-        <p class="text-secondary" style="margin:0;padding-left:calc(20px + var(--space-2))">${faq.a}</p>
-      </div>`).join('');
+    const faqItems = FAQ_CATEGORIES.map(cat => {
+      const items = cat.items.map((faq, j) => {
+        const searchData = (faq.q + ' ' + faq.a).toLowerCase().replace(/'/g, '');
+        return `
+          <details class="faq-item" data-search="${searchData}">
+            <summary class="faq-item__summary">
+              <span class="faq-item__q">${faq.q}</span>
+              <svg data-lucide="chevron-down" class="faq-item__arrow" aria-hidden="true"></svg>
+            </summary>
+            <div class="faq-item__answer">${faq.a}</div>
+          </details>`;
+      }).join('');
+      return `
+        <div class="faq-category" data-cat="${cat.id}">
+          <h3 class="faq-category__title">
+            <svg data-lucide="${cat.icon}" aria-hidden="true"></svg>
+            ${cat.title}
+          </h3>
+          <div class="faq-list">${items}</div>
+        </div>`;
+    }).join('');
 
     this._render(`
-      <section class="section" aria-labelledby="help-heading">
+      <!-- ── PAGE HEADER ── -->
+      <div class="page-header">
         <div class="container">
-          <div class="text-center mb-8">
-            <span class="label">Troubleshooting</span>
-            <h1 id="help-heading" class="mt-2">We've Got You</h1>
-            <p class="lead" style="max-width:520px;margin:0 auto">Common questions answered. Still stuck? Chat with us directly.</p>
-          </div>
-          <div class="stack" style="--stack-gap:var(--space-4);max-width:720px;margin:0 auto">
-            ${faqItems}
-          </div>
-          <div class="contact-strip mt-8" style="border-radius:var(--radius-lg)">
-            <h2>Still Have Questions?</h2>
-            <p>We respond to every WhatsApp message, usually within a few hours.</p>
-            <div class="cluster">
-              <a href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I%20need%20help%20with%20the%20Glow%20Guide." class="btn btn--whatsapp" target="_blank" rel="noopener noreferrer">
+          <span class="label" style="color:rgba(255,255,255,0.6)">Support</span>
+          <h1 style="color:white;margin-bottom:var(--space-2)">We're Here to Help</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:520px;margin:0">
+            Answers to the most common questions. Still stuck? We respond to every WhatsApp message within 4 hours.
+          </p>
+        </div>
+      </div>
+
+      <!-- ── QUICK CONTACT ── -->
+      <div class="quick-contact">
+        <div class="container">
+          <div class="quick-contact__inner">
+            <div class="quick-contact__text">
+              <p class="quick-contact__title">Talk to Goodie Directly</p>
+              <p class="quick-contact__sub">Response time: usually within 4 hours</p>
+            </div>
+            <div class="cluster" style="gap:var(--space-2)">
+              <a href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I%20need%20help%20with%20the%20Glow%20Guide." class="btn btn--whatsapp btn--sm" target="_blank" rel="noopener noreferrer">
                 <svg data-lucide="message-circle" aria-hidden="true"></svg>
-                WhatsApp: 08063214942
+                08063214942
+              </a>
+              <a href="https://instagram.com/its.goodie" class="btn btn--secondary btn--sm" target="_blank" rel="noopener noreferrer">
+                @its.goodie
               </a>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+
+      <!-- ── SEARCH ── -->
+      <div class="section" style="padding:var(--space-10) 0">
+        <div class="container">
+          <div class="faq-search" role="search">
+            <svg data-lucide="search" aria-hidden="true"></svg>
+            <input
+              type="search"
+              id="faq-search"
+              class="faq-search__input"
+              placeholder="Search for help… e.g. 'breakout', 'tight skin', 'skip day'"
+              aria-label="Search frequently asked questions"
+              autocomplete="off"
+            >
+          </div>
+
+          <!-- FAQ accordion -->
+          <div id="faq-container" class="faq-container" aria-live="polite">
+            ${faqItems}
+          </div>
+
+          <!-- No results message (hidden by default) -->
+          <div id="faq-empty" class="faq-empty" hidden>
+            <svg data-lucide="search-x" aria-hidden="true"></svg>
+            <p>No results found. Try different keywords or <a href="https://wa.me/2348063214942" target="_blank" rel="noopener noreferrer">ask us directly on WhatsApp</a>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DECISION TREE ── -->
+      <div style="background:var(--color-bg-muted);padding:var(--space-10) 0">
+        <div class="container">
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-6)">Quick Problem Solver</h2>
+          <div class="decision-grid">
+            <div class="decision-card">
+              <div class="decision-card__icon" style="background:rgba(192,57,43,0.1)">
+                <svg data-lucide="alert-octagon" style="color:#C0392B" aria-hidden="true"></svg>
+              </div>
+              <h4>Painful reaction or swelling?</h4>
+              <p>Stop everything immediately. Rinse with cool water. Call us: 08063214942</p>
+              <a href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I'm%20having%20a%20reaction%20to%20my%20products%20and%20need%20urgent%20help." class="btn btn--sm" style="background:#C0392B;color:white;border-color:#C0392B" target="_blank" rel="noopener noreferrer">
+                Contact Now
+              </a>
+            </div>
+            <div class="decision-card">
+              <div class="decision-card__icon" style="background:rgba(212,175,55,0.1)">
+                <svg data-lucide="zap" style="color:var(--color-accent-dark)" aria-hidden="true"></svg>
+              </div>
+              <h4>Mild breakout in Week 1–3?</h4>
+              <p>This is normal purging. Keep going gently, don't pick, and drink more water.</p>
+              <a href="#/help" class="btn btn--secondary btn--sm">Read the FAQ above</a>
+            </div>
+            <div class="decision-card">
+              <div class="decision-card__icon" style="background:rgba(74,124,89,0.1)">
+                <svg data-lucide="clock" style="color:var(--color-success)" aria-hidden="true"></svg>
+              </div>
+              <h4>No visible results yet?</h4>
+              <p>Skin takes 28 days to turn over. Real change shows at Day 15–20. Check your Day 1 photo.</p>
+              <a href="#/progress" class="btn btn--secondary btn--sm">View My Progress</a>
+            </div>
+            <div class="decision-card">
+              <div class="decision-card__icon" style="background:rgba(139,111,71,0.1)">
+                <svg data-lucide="package" style="color:var(--color-primary)" aria-hidden="true"></svg>
+              </div>
+              <h4>Product or application question?</h4>
+              <p>Check the full product guide — every product has a "How to Use" and "Tips" section.</p>
+              <a href="#/products" class="btn btn--secondary btn--sm">Go to Products</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CONTACT FORM / WHATSAPP ── -->
+      <div class="section" style="padding:var(--space-10) 0">
+        <div class="container" style="max-width:640px">
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-2)">Send Us a Message</h2>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6)">
+            Fill this in and we'll open WhatsApp with your message pre-written. Quick and easy.
+          </p>
+          <form class="contact-form" id="help-contact-form" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="cf-name">Your name</label>
+              <input type="text" id="cf-name" class="form-input" placeholder="e.g. Amara" autocomplete="given-name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cf-topic">Topic</label>
+              <select id="cf-topic" class="form-select">
+                <option value="general">General question</option>
+                <option value="reaction">Skin reaction</option>
+                <option value="product">Product question</option>
+                <option value="results">Not seeing results</option>
+                <option value="order">Order / restock</option>
+                <option value="technical">App issue</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cf-message">Your message</label>
+              <textarea id="cf-message" class="form-textarea" rows="4"
+                placeholder="Describe what's happening and which day you're on…"></textarea>
+            </div>
+            <button type="submit" class="btn btn--whatsapp btn--full" id="cf-submit">
+              <svg data-lucide="message-circle" aria-hidden="true"></svg>
+              Open WhatsApp with This Message
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ── COMMUNITY ── -->
+      <div class="contact-strip">
+        <div class="container">
+          <h2>Join the Goodie Community</h2>
+          <p>Share your progress, get tips, and celebrate with other Goodie Babes doing the 30-day journey. Tag us — we repost transformations!</p>
+          <div class="cluster" style="justify-content:center;flex-wrap:wrap">
+            <a href="https://instagram.com/its.goodie" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
+              <svg data-lucide="heart" aria-hidden="true"></svg>
+              Follow @its.goodie
+            </a>
+            <span class="btn btn--ghost" style="color:rgba(255,255,255,0.7);cursor:default">
+              #GoodieGlowUp
+            </span>
+          </div>
+        </div>
+      </div>
     `);
   },
 
@@ -1376,6 +1789,48 @@ const GoodieApp = {
         Views.renderDay(dayNum);
       });
     });
+
+    // FAQ search (help page)
+    const faqSearch = document.getElementById('faq-search');
+    if (faqSearch) {
+      faqSearch.addEventListener('input', () => {
+        const query = faqSearch.value.trim().toLowerCase();
+        const items = document.querySelectorAll('.faq-item');
+        const cats  = document.querySelectorAll('.faq-category');
+        const empty = document.getElementById('faq-empty');
+        let visible = 0;
+
+        items.forEach(item => {
+          const match = !query || (item.getAttribute('data-search') || '').includes(query);
+          item.hidden = !match;
+          if (match) visible++;
+        });
+
+        cats.forEach(cat => {
+          cat.hidden = [...cat.querySelectorAll('.faq-item')].every(i => i.hidden);
+        });
+
+        if (empty) empty.hidden = visible > 0;
+      });
+    }
+
+    // Help contact form → pre-filled WhatsApp
+    const helpForm = document.getElementById('help-contact-form');
+    if (helpForm) {
+      helpForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name    = (document.getElementById('cf-name')?.value.trim())   || 'a customer';
+        const topic   = document.getElementById('cf-topic')?.value            || 'general';
+        const message = (document.getElementById('cf-message')?.value.trim()) || '';
+        const labels  = {
+          general: 'General question', reaction: 'Skin reaction',
+          product: 'Product question', results: 'Not seeing results',
+          order: 'Order / restock',    technical: 'App issue'
+        };
+        const text = `Hi Goodie! My name is ${name}.\n\nTopic: ${labels[topic] || topic}\n\n${message}`;
+        window.open(`https://wa.me/2348063214942?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+      });
+    }
   },
 
   _refreshCompleteBar(dayNumber) {
