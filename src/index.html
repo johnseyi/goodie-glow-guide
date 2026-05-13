@@ -47,6 +47,83 @@
 </head>
 <body>
 
+  <!-- ═══════════════════════════════════════════
+       ACCESS GATE — shown when no valid code is stored.
+       Hidden by default; app.js removes the `hidden` attribute
+       when access is not yet granted.
+  ═══════════════════════════════════════════ -->
+  <div id="access-gate" class="access-gate" hidden
+       role="dialog" aria-modal="true" aria-label="Enter your access code to unlock the Glow Guide">
+
+    <div class="access-gate__content">
+
+      <!-- Logo -->
+      <p class="access-gate__logo" aria-label="Goodie Glow Guide">
+        Goodie <span class="access-gate__logo-accent">Glow</span>
+      </p>
+
+      <!-- Card -->
+      <div class="access-gate__card" id="access-gate-card">
+        <h2 class="access-gate__title">Welcome to Your Glow Journey</h2>
+        <p class="access-gate__subtitle">Enter your access code to unlock your 30-day guide</p>
+
+        <form id="access-form" class="access-form" novalidate>
+          <input
+            type="text"
+            id="access-code-input"
+            class="access-form__input"
+            placeholder="ACCESS CODE"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            aria-label="Access code"
+            required
+          >
+          <button type="submit" class="btn btn--primary btn--full">
+            Unlock My Guide
+          </button>
+        </form>
+
+        <div id="access-error" class="access-error" hidden aria-live="assertive">
+          Invalid code — please check and try again.
+        </div>
+
+        <div class="access-gate__help">
+          <p>Don't have an access code?</p>
+          <a href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I%20want%20to%20get%20the%2030-day%20Glow%20Guide"
+             class="btn btn--whatsapp btn--sm"
+             target="_blank"
+             rel="noopener noreferrer">
+            Get Your Code on WhatsApp
+          </a>
+          <p class="access-gate__contact">08063214942 &middot; @its.goodie</p>
+        </div>
+      </div>
+
+      <!-- Feature highlights -->
+      <ul class="access-gate__features" aria-label="What's included">
+        <li class="access-feature">
+          <span class="access-feature__icon" aria-hidden="true">✨</span>
+          <span>30-Day Personalized Routine</span>
+        </li>
+        <li class="access-feature">
+          <span class="access-feature__icon" aria-hidden="true">📸</span>
+          <span>Track Your Progress</span>
+        </li>
+        <li class="access-feature">
+          <span class="access-feature__icon" aria-hidden="true">🌿</span>
+          <span>Natural Treatments Included</span>
+        </li>
+        <li class="access-feature">
+          <span class="access-feature__icon" aria-hidden="true">💬</span>
+          <span>Direct Support Access</span>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+
   <!-- Skip to main content — first focusable element on every page -->
   <a href="#main" class="skip-link">Skip to main content</a>
 

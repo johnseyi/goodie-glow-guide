@@ -2213,32 +2213,131 @@ function _debounce(fn, ms) {
 
 
 // ─────────────────────────────────────────────
+// ACCESS CONTROL
+// ─────────────────────────────────────────────
+const AccessControl = {
+  // Edit this array to add, remove, or rotate codes.
+  // Codes are case-insensitive — customers can type in any case.
+  validCodes: [
+    'GOODIE2024',
+    'GLOW30DAYS',
+    'SKINCARE2024'
+  ],
+
+  hasAccess() {
+    return this.isValidCode(Storage.get('access'));
+  },
+
+  isValidCode(code) {
+    if (!code) return false;
+    return this.validCodes.includes(code.toUpperCase().trim());
+  },
+
+  // Show the gate and wire up the form.
+  setupGate() {
+    const gate = document.getElementById('access-gate');
+    if (gate) gate.removeAttribute('hidden');
+
+    const form    = document.getElementById('access-form');
+    const errorEl = document.getElementById('access-error');
+    const inputEl = document.getElementById('access-code-input');
+
+    if (!form) return;
+    if (inputEl) inputEl.focus();
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = inputEl ? inputEl.value.trim() : '';
+
+      if (this.isValidCode(code)) {
+        Storage.set('access', code.toUpperCase().trim());
+        this._showSuccess();
+        setTimeout(_bootApp, 1600);
+      } else {
+        this._showError(inputEl, errorEl);
+      }
+    });
+  },
+
+  _showSuccess() {
+    const card = document.getElementById('access-gate-card');
+    if (!card) return;
+    card.innerHTML = `
+      <div class="access-success">
+        <div class="access-success__icon" aria-hidden="true">✓</div>
+        <h2>Welcome!</h2>
+        <p>Loading your glow journey…</p>
+      </div>`;
+  },
+
+  _showError(inputEl, errorEl) {
+    if (errorEl) errorEl.hidden = false;
+    if (inputEl) {
+      inputEl.classList.add('is-error');
+      inputEl.value = '';
+      inputEl.focus();
+    }
+    setTimeout(() => {
+      if (errorEl) errorEl.hidden = true;
+      if (inputEl) inputEl.classList.remove('is-error');
+    }, 3200);
+    trackEvent('access', 'invalid_code', '');
+  },
+
+  // Open the browser console on your site and call this to print a one-time
+  // code for a customer. To make it permanent, add it to validCodes[] and redeploy.
+  generateCode(customerName) {
+    const code = 'GOODIE' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    console.log('%c Code for ' + customerName + ': ' + code, 'color:#8B6F47;font-weight:bold;font-size:14px');
+    return code;
+  },
+
+  // Run in the customer's browser console to clear their saved code.
+  revokeAccess() {
+    Storage.remove('access');
+    window.location.reload();
+  }
+};
+
+
+// ─────────────────────────────────────────────
 // BOOT
 // ─────────────────────────────────────────────
-// This script sits at the bottom of <body> with no defer/async, so by the
-// time the browser executes it the entire DOM is already built. No
-// DOMContentLoaded listener is needed — just run immediately.
-(function boot() {
-  var main = document.getElementById('main');
-
-  function showError(msg) {
-    if (main) main.innerHTML = '<div style="padding:2rem;font-family:sans-serif"><strong style="color:red">Boot error:</strong><pre style="white-space:pre-wrap;font-size:13px;margin-top:8px">' + msg + '</pre></div>';
-    console.error('[Goodie] Boot error:', msg);
-  }
-
-  if (!content) {
-    showError('window.GoodieContent is not set — content.js may have failed to load or ran out of order.');
-    return;
-  }
+// Hides the access gate and starts the full app.
+// Called either directly (code already saved) or by AccessControl after
+// the user enters a valid code.
+function _bootApp() {
+  const gate = document.getElementById('access-gate');
+  if (gate) gate.hidden = true;
 
   try {
     GoodieApp.init();
   } catch (e) {
-    showError(e.stack || e.message || String(e));
+    var main = document.getElementById('main');
+    if (main) main.innerHTML = '<div style="padding:2rem;font-family:sans-serif"><strong style="color:red">Boot error:</strong><pre style="white-space:pre-wrap;font-size:13px;margin-top:8px">' + (e.stack || e.message || String(e)) + '</pre></div>';
+    console.error('[Goodie] Boot error:', e);
+    return;
+  }
+  if (window.lucide) window.lucide.createIcons();
+  trackEvent('app', 'boot', 'success');
+}
+
+// This script runs synchronously after the DOM is built (no defer/async),
+// so no DOMContentLoaded listener is needed.
+(function boot() {
+  if (!content) {
+    var main = document.getElementById('main');
+    if (main) main.innerHTML = '<div style="padding:2rem;font-family:sans-serif"><strong style="color:red">Boot error:</strong><pre style="white-space:pre-wrap;font-size:13px;margin-top:8px">window.GoodieContent is not set — content.js may have failed to load or ran out of order.</pre></div>';
+    console.error('[Goodie] content.js failed');
     return;
   }
 
-  if (window.lucide) window.lucide.createIcons();
+  if (!AccessControl.hasAccess()) {
+    AccessControl.setupGate();
+    return;
+  }
+
+  _bootApp();
 }());
 
 }()); // end app IIFE
