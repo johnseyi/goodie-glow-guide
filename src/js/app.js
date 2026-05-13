@@ -372,7 +372,7 @@ const Views = {
             </h1>
 
             <p class="hero__subtitle">
-              A complete, step-by-step skincare programme built specifically for Nigerian and Ugandan skin. Simple routines. Real results. Lasting habits.
+              A complete, step-by-step skincare programme built specifically for African skin. Simple routines. Real results. Lasting habits.
             </p>
 
             ${progressBar}
@@ -480,14 +480,14 @@ const Views = {
               WhatsApp: 08063214942
             </a>
             <a
-              href="https://instagram.com/its.goodie"
+              href="https://instagram.com/_its.g.o.o.d.i.e"
               class="btn btn--secondary"
               style="color:white;border-color:rgba(255,255,255,0.5)"
               target="_blank"
               rel="noopener noreferrer"
             >
               <svg data-lucide="instagram" aria-hidden="true"></svg>
-              @its.goodie
+              @_its.g.o.o.d.i.e
             </a>
           </div>
         </div>
@@ -1130,10 +1130,10 @@ const Views = {
         category: 'Cleanser', color: '#8B6F47', initial: 'CW',
         desc: 'A brightening gel cleanser that lifts away impurities and excess oil while Vitamin C starts evening your skin tone from Day 1.',
         howToUse: 'Wet face, apply a small coin-sized amount, massage in gentle circular motions for 60 seconds, rinse thoroughly with lukewarm water. Pat dry — never rub. Use morning and evening.',
-        waitTime: 'Apply toner or next step immediately after patting dry.',
+        waitTime: 'Tone or apply next step immediately after patting dry.',
         ingredients: ['Vitamin C (Ascorbic Acid) — brightens dark spots, boosts collagen, fades hyperpigmentation', 'Aloe Vera — soothes irritation and locks in moisture after cleansing', 'Glycerin — draws water into the skin and prevents post-cleanse dryness'],
         bestFor: 'All skin types, especially oily and combination. Targets uneven tone, dark spots, and dullness.',
-        pairs: 'Pairs perfectly with everything in the Goodie range.',
+        pairs: 'Pairs perfectly with everything in the Goodie Glow range.',
         tips: ['Use lukewarm water only — hot water strips your moisture barrier', 'Rinse for a full 30 seconds; leftover residue clogs pores', 'Skin feels tight after? You\'re using too much — halve the amount']
       },
       toner: {
@@ -1360,15 +1360,15 @@ const Views = {
       <div class="contact-strip">
         <div class="container">
           <h2>Need to Order or Restock?</h2>
-          <p>Message us directly — we deliver across Nigeria and Uganda.</p>
+          <p>Message us directly — we deliver across Africa.</p>
           <div class="cluster" style="justify-content:center">
             <a href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I%20want%20to%20order%20the%20Glow%20Guide%20products." class="btn btn--whatsapp" target="_blank" rel="noopener noreferrer">
               <svg data-lucide="message-circle" aria-hidden="true"></svg>
               Order via WhatsApp
             </a>
-            <a href="https://instagram.com/its.goodie" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
+            <a href="https://instagram.com/_its.g.o.o.d.i.e" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
               <svg data-lucide="heart" aria-hidden="true"></svg>
-              @its.goodie
+              @_its.g.o.o.d.i.e
             </a>
           </div>
         </div>
@@ -1482,8 +1482,8 @@ const Views = {
                 <svg data-lucide="message-circle" aria-hidden="true"></svg>
                 08063214942
               </a>
-              <a href="https://instagram.com/its.goodie" class="btn btn--secondary btn--sm" target="_blank" rel="noopener noreferrer">
-                @its.goodie
+              <a href="https://instagram.com/_its.g.o.o.d.i.e" class="btn btn--secondary btn--sm" target="_blank" rel="noopener noreferrer">
+                @_its.g.o.o.d.i.e
               </a>
             </div>
           </div>
@@ -1603,9 +1603,9 @@ const Views = {
           <h2>Join the Goodie Community</h2>
           <p>Share your progress, get tips, and celebrate with other Goodie Babes doing the 30-day journey. Tag us — we repost transformations!</p>
           <div class="cluster" style="justify-content:center;flex-wrap:wrap">
-            <a href="https://instagram.com/its.goodie" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
+            <a href="https://instagram.com/_its.g.o.o.d.i.e" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
               <svg data-lucide="heart" aria-hidden="true"></svg>
-              Follow @its.goodie
+              Follow @_its.g.o.o.d.i.e
             </a>
             <span class="btn btn--ghost" style="color:rgba(255,255,255,0.7);cursor:default">
               #GoodieGlowUp
@@ -2235,7 +2235,7 @@ const GoodieApp = {
         <div class="pr-photos">${photoHTML}</div>
 
         <footer class="pr-ft">
-          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @its.goodie
+          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @_its.g.o.o.d.i.e
         </footer>
       </div>`;
 
@@ -2306,7 +2306,7 @@ const GoodieApp = {
         </div>
 
         <footer class="pr-ft">
-          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @its.goodie
+          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @_its.g.o.o.d.i.e
         </footer>
       </div>`;
 

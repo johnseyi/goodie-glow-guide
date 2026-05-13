@@ -55,14 +55,14 @@ const content = {
   // PRODUCTS REFERENCE
   // ─────────────────────────────────────────────
   products: {
-    facewash:         { id: "facewash",         name: "Goodie Vitamin C Face Wash",            use: "Cleanser" },
-    moisturizer:      { id: "moisturizer",      name: "Goodie Moisturising Lotion",            use: "Moisturiser (AM + PM)" },
-    sunscreen:        { id: "sunscreen",         name: "Goodie SPF 50 Sunscreen",              use: "Sun protection (AM only)" },
-    toner:            { id: "toner",             name: "Goodie Clarifying Toner",              use: "After cleanse, before serum" },
-    vitaminCSerum:    { id: "vitaminCSerum",     name: "Goodie Vitamin C Brightening Serum",   use: "AM serum" },
-    niacinamideSerum: { id: "niacinamideSerum",  name: "Goodie Niacinamide Serum",             use: "PM serum" },
-    eyeCream:         { id: "eyeCream",          name: "Goodie Eye Cream",                     use: "Under-eye area, AM + PM" },
-    lipBalm:          { id: "lipBalm",           name: "Goodie Shea Lip Balm",                 use: "Lips, last step PM" }
+    facewash:         { id: "facewash",         name: "Vitamin C Face Wash",            use: "Cleanser" },
+    moisturizer:      { id: "moisturizer",      name: "Moisturising Lotion",            use: "Moisturiser (AM + PM)" },
+    sunscreen:        { id: "sunscreen",         name: "Sunscreen SPF 50",              use: "Sun protection (AM only)" },
+    toner:            { id: "toner",             name: "Hydrating Toner",              use: "After cleanse, before serum" },
+    vitaminCSerum:    { id: "vitaminCSerum",     name: "Vitamin C Serum",   use: "AM serum" },
+    niacinamideSerum: { id: "niacinamideSerum",  name: "Niacinamide Serum",             use: "PM serum" },
+    eyeCream:         { id: "eyeCream",          name: "Eye Cream",                     use: "Under-eye area, AM + PM" },
+    lipBalm:          { id: "lipBalm",           name: "Shea Lip Balm",                 use: "Lips, last step PM" }
   },
 
   // ─────────────────────────────────────────────
@@ -82,19 +82,19 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Splash your face with cool water — not hot, never hot. Apply a small pump of face wash. Massage in gentle circles for 30 seconds, focusing on your nose, forehead, and chin. Rinse until your skin feels clean but not squeaky. Pat dry with a clean, soft towel."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "While your face is still slightly damp, take a pea-sized amount. Apply in upward strokes — always up, never down. Work from chin to forehead. Don't forget your neck — it shows age just as much as your face!"
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "This step is non-negotiable. Two-finger length of sunscreen for your face and neck. Apply 10–15 minutes before stepping outside. Yes, even on cloudy days in Lagos — UV rays don't take days off."
         }
@@ -102,19 +102,19 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "After a long day of Lagos heat, dust, and hustle — your face deserves a proper wash. Same technique as morning. Take your time, don't rush this step."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Apply 3–4 drops onto clean skin. Press gently with your palms — don't rub. Niacinamide works through the night to even your skin tone. Let it absorb for 30 seconds before moving to moisturiser."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in that serum! Use a slightly more generous amount than morning — night-time is when your skin does its repair work and needs the extra nourishment. Same upward strokes."
         }
@@ -139,19 +139,19 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Wet face with cool water. Two pumps of face wash. Gentle circular massage, 30 seconds. Rinse clean. Pat dry — your skin should feel fresh, not tight."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Damp face, pea-sized amount, upward strokes from chin to forehead. Neck too!"
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Two-finger length, applied after moisturiser. Let it sit for a minute before applying makeup if you wear it."
         }
@@ -159,19 +159,19 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Wash away everything the day brought — dust, sweat, pollution. Be thorough but gentle around the eyes."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "3–4 drops, press into skin with palms. Let it sink in for 30 seconds."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Seal in the serum. Upward strokes, don't forget the neck."
         }
@@ -194,19 +194,19 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Cool water, gentle circles, thorough rinse. Starting to feel like second nature already?"
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Pea-sized amount on damp skin. Upward strokes, include neck."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Today, really pay attention to this step. Apply to face, neck, and the backs of your hands. Your hands are exposed to sun all day and most people forget them completely."
         }
@@ -214,24 +214,24 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Cleanse properly — sunscreen needs to be fully removed at night or it can clog pores."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "3–4 drops, press in, wait 30 seconds."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock it all in. Sleep is when your skin heals — give it the moisture it needs."
         }
       ],
-      tip: "SPF is the single most proven anti-ageing and anti-darkening product that exists. Hyperpigmentation, dark spots, uneven tone — sun exposure makes all of these worse. Your Goodie SPF 50 is doing more work than you realise.",
+      tip: "SPF is the single most proven anti-ageing and anti-darkening product that exists. Hyperpigmentation, dark spots, uneven tone — sun exposure makes all of these worse. Your Sunscreen SPF 50 is doing more work than you realise.",
       avoid: [
         "Skipping sunscreen on cool or cloudy days",
         "Applying sunscreen only to your face but not your neck",
@@ -249,19 +249,19 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning wash — your face has been on a pillow all night collecting oils. Cleanse gently and thoroughly."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Damp skin, upward strokes. Take 10 extra seconds to massage it into your hairline and jawline."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Don't mix it with your moisturiser — apply separately and let each product do its job."
         }
@@ -269,19 +269,19 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Two minutes, cool water, gentle circles. If you wore sunscreen today, cleanse a little more thoroughly."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Press into skin — forehead, cheeks, chin, and down the neck."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Night moisturiser — be generous. Your skin is going to do a lot of healing in the next 7 hours."
         }
@@ -304,19 +304,19 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "You know the drill. Cool water, gentle circles, thorough rinse, pat dry."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Upward strokes on damp skin. Add a tiny dot to the outer corners of your eyes today — the skin there is extra thin and delicate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Every morning. No exceptions. This is the product that protects all the progress you're making."
         }
@@ -324,19 +324,19 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "End the day clean. Wash off the Lagos sun, the Kampala dust, everything the day brought."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "3–4 drops pressed gently into skin. Working through the night to even your tone."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Seal it all in. Sleep well — your skin is working even when you're not."
         }
@@ -359,19 +359,19 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Weekend morning — you might have more time. Take an extra 30 seconds and really enjoy the massage. This improves circulation and helps the cleanser do its job."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Damp skin, upward strokes. If you're staying indoors most of the day, use a slightly lighter amount."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Still applies on weekends! Even by a window indoors, UVA rays (the ageing ones) come through glass."
         }
@@ -379,19 +379,19 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Even on days you didn't go out much — cleanse before bed. Pillow oil and indoor air still build up."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "3–4 drops. Press and hold your palms on your face for 5 seconds — the warmth helps absorption."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in your weekend rest. Generous application — your skin is relaxed tonight."
         }
@@ -414,19 +414,19 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Your Week 1 completion morning cleanse. Same gentle technique, but today take a moment and really look at your skin. Notice anything different?"
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Damp face, upward strokes. You've done this every day this week — it's already a habit."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Seven days of SPF. Your skin is already more protected from the darkening effects of sun exposure."
         }
@@ -434,19 +434,19 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "End Week 1 clean. You showed up every single day — that's not small."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Seven nights of niacinamide working on your tone. Keep it going."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Well done. Rest up — Week 2 brings exciting additions to your routine."
         }
@@ -474,25 +474,25 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Same foundation routine. Cool water, gentle circles, pat dry. This never changes."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "NEW STEP! After cleansing, soak a cotton pad with toner. Swipe gently from the centre of your face outward — cheeks, forehead, chin, neck. It removes any last traces of cleanser and preps your skin to absorb the moisturiser better. It should feel cool and refreshing."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Apply immediately after toning while skin is slightly damp from the toner."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Last step. Always."
         }
@@ -500,32 +500,32 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Thorough evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Cotton pad, swipe outward from centre. This also helps balance your skin's pH after cleansing."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "3–4 drops, pressed in gently."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Seal everything in."
         }
       ],
       tip: "The toner is the first upgrade. It does two things: removes the invisible residue your cleanser leaves behind, and gets your skin into the ideal state to absorb everything that comes after. You might notice your moisturiser feels like it sinks in faster — that's the toner working.",
       avoid: [
-        "Using a toner with alcohol — it burns and dries your skin. The Goodie toner is alcohol-free",
+        "Using a toner with alcohol — it burns and dries your skin. The Hydrating Toner is alcohol-free",
         "Rubbing the cotton pad back and forth — always swipe in one direction",
         "Skipping toner and going straight to moisturiser — order matters",
         "Using too much — the cotton pad should be damp, not dripping"
@@ -541,25 +541,25 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Foundation routine — cool water, gentle circles, pat dry."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Today, try applying the toner with your fingertips instead of a cotton pad. Pour 5–6 drops into your palm and press gently all over your face. Some people prefer this — it's less wasteful and feels more nourishing."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Immediately after toner. Upward strokes."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Two-finger length. Face and neck."
         }
@@ -567,25 +567,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse. Take your time."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Use whichever method you preferred today — cotton pad or palms. Stick with what feels right for your skin."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Press in gently after toner."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock it in. Good night."
         }
@@ -608,31 +608,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Cool water, gentle circles, thorough rinse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Cotton pad or palms — whichever you chose on Day 9."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "NEW PRODUCT! 2–3 drops onto your fingertips. Press gently over your entire face — forehead, cheeks, nose, chin. Vitamin C works best in the morning because it also boosts your sunscreen's effectiveness against UV damage. It might tingle slightly on the first few uses — that's normal."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Wait 30 seconds for the serum to absorb, then apply moisturiser on top."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Your Vitamin C + SPF combo is now working together to protect and brighten. Powerful."
         }
@@ -640,25 +640,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Remove everything — Vitamin C serum, sunscreen, the day."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep and balance the skin."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Night serum. Niacinamide at night, Vitamin C in the morning — this is the winning combination."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Seal everything in for overnight repair."
         }
@@ -683,31 +683,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Gentle circles, cool water, thorough rinse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep the skin."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "2–3 drops, press in gently. Remember: thinnest products go first — serum before moisturiser."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "After 30 seconds, seal in the serum."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Always last in your morning routine."
         }
@@ -715,25 +715,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Balance and prep."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Night serum — press in, let absorb."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Night moisturiser. Sleep well."
         }
@@ -756,31 +756,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Gentle circles, cool rinse, pat dry."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep your skin."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Today, after the Vitamin C serum absorbs, splash a very light mist of water over your face before applying moisturiser. This moisture-sandwich technique locks in serious hydration."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Apply quickly after the mist while skin is still damp. You might need a touch more product today — that's fine."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect all that hydration."
         }
@@ -788,25 +788,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep and balance."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Press in gently. Working on tone while you sleep."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Use a slightly more generous amount tonight — overnight hydration boost."
         }
@@ -829,31 +829,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Regular cleanse with cool water. Then do the ice water therapy (see natural remedy below) before continuing."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "After ice therapy."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "2–3 drops, pressed in."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Seal everything in."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Last step."
         }
@@ -861,25 +861,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep and balance."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Press in gently."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in for overnight repair."
         }
@@ -921,31 +921,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Your halfway cleanse. Do the ice water dip after this — it's Day 2 of 3."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "After ice therapy."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning serum. You've had this in your routine for 5 days now."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Upward strokes. Halfway through — your skin has had two weeks of daily care."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "14 days of sun protection. Your dark spots are fighting a losing battle."
         }
@@ -953,25 +953,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "End of Week 2 cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep and balance."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "14 nights of niacinamide. Your skin tone is evening out steadily."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Rest and repair. Week 3 tomorrow — it gets exciting."
         }
@@ -1012,31 +1012,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse — then the final ice water dip (Day 3 of 3)."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "After ice therapy."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Vitamin C in the morning."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Seal in and prep for the day."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect."
         }
@@ -1044,25 +1044,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Night serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock it in. Tomorrow: turmeric time."
         }
@@ -1098,31 +1098,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Gentle morning cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Moisturise and protect."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Always."
         }
@@ -1130,13 +1130,13 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Cleanse thoroughly — especially important tonight as you're about to do a mask."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep your skin for the mask."
         },
@@ -1148,13 +1148,13 @@ const content = {
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Apply immediately after rinsing the mask."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in the mask benefits overnight."
         }
@@ -1197,31 +1197,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse — check if any turmeric tint remains. One more cleanse usually removes it completely."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep and balance."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Your brightening serum works even harder after a turmeric mask night."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect the progress."
         }
@@ -1229,13 +1229,13 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep for mask."
         },
@@ -1247,13 +1247,13 @@ const content = {
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Post-mask serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Seal it in overnight."
         }
@@ -1289,31 +1289,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Vitamin C in the morning."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate and protect."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Always last."
         }
@@ -1321,13 +1321,13 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Final turmeric mask night. Thorough cleanse first."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
@@ -1339,13 +1339,13 @@ const content = {
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Post-mask serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Generous application after the final mask. Rest well."
         }
@@ -1381,31 +1381,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse — after your ginger shot (take the shot first thing, then do skincare)."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Vitamin C serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect."
         }
@@ -1413,25 +1413,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Night serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in for overnight repair."
         }
@@ -1476,31 +1476,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Ginger shot first, then morning cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect."
         }
@@ -1508,25 +1508,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Night serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in for overnight repair."
         }
@@ -1562,31 +1562,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Final ginger shot morning — take the shot, then cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Vitamin C serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate and protect."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Always."
         }
@@ -1594,25 +1594,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "End of Week 3 cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Week 3 final night serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Rest and repair. Week 4 is about mastery."
         }
@@ -1650,31 +1650,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning foundation cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect."
         }
@@ -1682,13 +1682,13 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Thorough evening cleanse — your face needs to be completely clean before the sheet mask."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep your skin to absorb the mask essence."
         },
@@ -1700,7 +1700,7 @@ const content = {
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Apply lightly on top of the sheet mask essence to lock in all that concentrated hydration."
         }
@@ -1723,31 +1723,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Your skin might look particularly glowy this morning — that's the sheet mask effect."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect the glow."
         }
@@ -1755,13 +1755,13 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
@@ -1773,7 +1773,7 @@ const content = {
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Seal over the mask essence."
         }
@@ -1796,31 +1796,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Vitamin C."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect."
         }
@@ -1828,13 +1828,13 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Final sheet mask night — set the mood. This is self-care."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
@@ -1846,7 +1846,7 @@ const content = {
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in everything. Days 25–30 are your final push."
         }
@@ -1869,31 +1869,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "If you have active breakouts, be extra gentle in those areas. Light pressure, not scrubbing."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "The toner helps keep pores clear — important for breakout prevention."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Apply everywhere except directly over broken-skin spots."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Moisturise even oily or breakout-prone skin — skipping moisturiser makes skin produce more oil."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Especially important if you have dark spots from past breakouts — sun makes post-acne marks darker."
         }
@@ -1901,25 +1901,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Extra careful cleanse around any active spots — don't press or pop."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "The clarifying effect helps overnight."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Niacinamide is excellent for breakout-prone skin — it reduces sebum production and calms inflammation."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lighter application over breakout areas, normal elsewhere."
         }
@@ -1942,31 +1942,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Gentle morning cleanse. Any breakout from yesterday should be calmer today."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Gently."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning Vitamin C — avoid broken-skin spots."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Keep skin balanced."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect post-spot areas — sun makes marks permanent."
         }
@@ -1974,25 +1974,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Balance."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Niacinamide overnight to reduce inflammation and prevent new breakouts."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in overnight repair."
         }
@@ -2015,31 +2015,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning Vitamin C — 3 days until the finish line."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Final sprint — this step never stops."
         }
@@ -2047,25 +2047,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "27 nights of niacinamide. Your skin tone has changed."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Three more nights. You've got this."
         }
@@ -2088,31 +2088,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Protect."
         }
@@ -2120,25 +2120,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Night serum."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock in for overnight repair."
         }
@@ -2162,31 +2162,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Morning cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Second to last morning serum of the programme."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Hydrate."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Last full day of the programme. Make it count."
         }
@@ -2194,25 +2194,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Evening cleanse."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep for one final sleep of the programme."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "Your 29th night serum. Tomorrow is Day 30."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Sleep well. Tomorrow you celebrate."
         }
@@ -2235,31 +2235,31 @@ const content = {
       morning: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Your final Day 30 morning cleanse. Same cool water, same gentle circles, same thorough rinse. You've done this 30 times. It's yours now."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep your glowing skin."
         },
         {
           step: "serum",
-          product: "Goodie Vitamin C Brightening Serum",
+          product: "Vitamin C Serum",
           duration: "1 minute",
           instructions: "Morning Vitamin C — your faithful partner for 21 days."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Upward strokes. You know this by heart."
         },
         {
           step: "sunscreen",
-          product: "Goodie SPF 50 Sunscreen",
+          product: "Sunscreen SPF 50",
           duration: "1 minute",
           instructions: "Always. Forever. This step never ends — Day 31, Day 100, Day 365."
         }
@@ -2267,25 +2267,25 @@ const content = {
       night: [
         {
           step: "cleanse",
-          product: "Goodie Vitamin C Face Wash",
+          product: "Vitamin C Face Wash",
           duration: "2 minutes",
           instructions: "Your 30th evening cleanse. Take your time tonight."
         },
         {
           step: "tone",
-          product: "Goodie Clarifying Toner",
+          product: "Hydrating Toner",
           duration: "30 seconds",
           instructions: "Prep."
         },
         {
           step: "serum",
-          product: "Goodie Niacinamide Serum",
+          product: "Niacinamide Serum",
           duration: "1 minute",
           instructions: "30 nights of this serum working on your skin tone. The results speak for themselves."
         },
         {
           step: "moisturize",
-          product: "Goodie Moisturising Lotion",
+          product: "Moisturising Lotion",
           duration: "1 minute",
           instructions: "Lock it all in. Day 31 starts tomorrow — and you already know exactly what to do."
         }
@@ -2297,7 +2297,7 @@ const content = {
         "Going back to harsh, stripping products",
         "Forgetting to take your after photos!"
       ],
-      specialNote: "CELEBRATION! Take your Day 30 photos — front, left side, right side — in the same lighting as Day 1. Share your journey with us on Instagram @its.goodie or WhatsApp 08063214942. You earned this. The glow is real, and so is the person who earned it. Welcome to the other side.",
+      specialNote: "CELEBRATION! Take your Day 30 photos — front, left side, right side — in the same lighting as Day 1. Share your journey with us on Instagram @_its.g.o.o.d.i.e or WhatsApp 08063214942. You earned this. The glow is real, and so is the person who earned it. Welcome to the other side.",
       hasPhotoPrompt: true,
       imageKey: "morning"
     }

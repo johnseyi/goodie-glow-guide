@@ -1,13 +1,13 @@
 # Goodie Glow Guide ✨
 
-An interactive 30-day skincare routine guide tailored for the Nigerian and Ugandan market. Built to help users build consistent, effective skincare habits with locally accessible products and expert-curated daily routines.
+An interactive 30-day skincare routine guide tailored for the African market. Built to help users build consistent, effective skincare habits with locally accessible products and expert-curated daily routines.
 
 ---
 
 ## Features
 
 - **30-Day Structured Programme** — Daily AM and PM routines with clear step-by-step instructions
-- **Locally Relevant Products** — Recommendations suited to Nigerian/Ugandan skin tones, climate, and product availability
+- **Locally Relevant Products** — Recommendations suited to African skin tones, climate, and product availability
 - **Progress Tracker** — Mark completed days and track your skincare journey
 - **Skin Type Quiz** — Personalised routine suggestions based on your skin type
 - **Ingredient Glossary** — Plain-language explanations of common skincare ingredients
@@ -105,7 +105,7 @@ goodie-glow-guide/
 | Channel     | Details                      |
 |-------------|------------------------------|
 | Phone       | 08063214942                  |
-| Instagram   | [@its.goodie](https://instagram.com/its.goodie) |
+| Instagram   | [@_its.g.o.o.d.i.e](https://instagram.com/_its.g.o.o.d.i.e) |
 
 ---
 
