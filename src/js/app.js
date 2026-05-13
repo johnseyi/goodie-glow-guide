@@ -480,14 +480,14 @@ const Views = {
               WhatsApp: 08063214942
             </a>
             <a
-              href="https://instagram.com/_its.g.o.o.d.i.e"
+              href="https://instagram.com/Its_g.o.o.d.i.e"
               class="btn btn--secondary"
               style="color:white;border-color:rgba(255,255,255,0.5)"
               target="_blank"
               rel="noopener noreferrer"
             >
               <svg data-lucide="instagram" aria-hidden="true"></svg>
-              @_its.g.o.o.d.i.e
+              @Its_g.o.o.d.i.e
             </a>
           </div>
         </div>
@@ -1130,81 +1130,81 @@ const Views = {
         category: 'Cleanser', color: '#8B6F47', initial: 'CW',
         desc: 'A brightening gel cleanser that lifts away impurities and excess oil while Vitamin C starts evening your skin tone from Day 1.',
         howToUse: 'Wet face, apply a small coin-sized amount, massage in gentle circular motions for 60 seconds, rinse thoroughly with lukewarm water. Pat dry — never rub. Use morning and evening.',
-        waitTime: 'Tone or apply next step immediately after patting dry.',
+        waitTime: 'Apply serum or next step immediately after patting dry.',
         ingredients: ['Vitamin C (Ascorbic Acid) — brightens dark spots, boosts collagen, fades hyperpigmentation', 'Aloe Vera — soothes irritation and locks in moisture after cleansing', 'Glycerin — draws water into the skin and prevents post-cleanse dryness'],
         bestFor: 'All skin types, especially oily and combination. Targets uneven tone, dark spots, and dullness.',
         pairs: 'Pairs perfectly with everything in the Goodie Glow range.',
         tips: ['Use lukewarm water only — hot water strips your moisture barrier', 'Rinse for a full 30 seconds; leftover residue clogs pores', 'Skin feels tight after? You\'re using too much — halve the amount']
       },
+      ceramideFacewash: {
+        category: 'Cleanser', color: '#7A6B55', initial: 'CF',
+        desc: 'A gentle ceramide-rich cleanser that cleans without stripping. Perfect for sensitive or dry skin types that find the Vitamin C wash too active.',
+        howToUse: 'Wet face, apply a small amount, massage gently for 60 seconds, rinse thoroughly. Pat dry. Use morning and evening.',
+        waitTime: 'Apply serum or next step immediately after patting dry.',
+        ingredients: ['Ceramide NP — restores and reinforces the skin barrier', 'Glycerin — draws and retains moisture', 'Panthenol (B5) — soothes irritation and supports healing'],
+        bestFor: 'Dry, sensitive, or compromised skin. Anyone experiencing redness or tightness from other cleansers.',
+        pairs: 'Use with any serum or moisturiser. Ideal base for sensitive skin routines.',
+        tips: ['If your skin feels tight after the Vitamin C wash, switch to this', 'Great for mornings when your skin feels dry — less active, more nourishing', 'Build up to the Vitamin C wash over 1–2 weeks if you\'re very sensitive']
+      },
       toner: {
         category: 'Toner', color: '#6B8E6F', initial: 'TO',
-        desc: 'A clarifying, pore-refining toner that balances your skin\'s pH after cleansing and preps it to absorb serums more effectively.',
-        howToUse: 'After cleansing, apply a small amount to a cotton pad and swipe gently across face and neck. Or press a few drops directly into skin with clean hands. Use morning and evening.',
-        waitTime: 'Wait 30 seconds, then apply serum.',
-        ingredients: ['Niacinamide (B3) — minimises pores, regulates oil production', 'Witch Hazel — natural astringent, reduces redness and blemishes', 'Hyaluronic Acid — immediately hydrates and plumps skin'],
-        bestFor: 'Oily, acne-prone, and enlarged-pore concerns. Great for balancing combination skin.',
-        pairs: 'Use before all serums. Safe with Vitamin C and Niacinamide serums.',
-        tips: ['Don\'t skip this — it restores your skin\'s pH after cleansing so actives work better', 'Less cotton pad pressure = less irritation. Gentle swipes only', 'Can be used as a hydration spritz throughout the day']
+        desc: 'A hydrating, pore-refining toner that balances your skin\'s pH after cleansing and preps it to absorb moisturiser more effectively. Used every evening.',
+        howToUse: 'After evening cleanse, apply a small amount to a cotton pad and swipe gently across face and neck. Or press a few drops directly into skin with clean hands. Evening use only.',
+        waitTime: 'Wait 30 seconds, then moisturise.',
+        ingredients: ['Niacinamide (B3) — minimises pores, regulates oil production', 'Rose Water — calms and hydrates, reduces redness', 'Hyaluronic Acid — immediately hydrates and plumps skin'],
+        bestFor: 'All skin types. Essential for balancing after cleansing and maximising moisturiser absorption.',
+        pairs: 'Use after cleanse, before moisturiser in your evening routine.',
+        tips: ['Don\'t skip this — it restores your skin\'s pH after cleansing so moisturiser works better', 'Less cotton pad pressure = less irritation. Gentle swipes only', 'Try pressing it in with fingertips instead of a pad for a more nourishing feel']
       },
       vitaminCSerum: {
         category: 'Serum (AM)', color: '#D4AF37', initial: 'VC',
-        desc: 'A potent brightening serum that fades dark spots, evens skin tone, and gives you that lit-from-within glow. Your morning secret weapon.',
-        howToUse: 'After toner in the morning, apply 3–4 drops to face and neck. Press gently into skin — don\'t rub. Always follow with moisturiser, then SPF.',
-        waitTime: 'Wait 60 seconds before applying moisturiser to let the serum absorb.',
+        desc: 'A potent brightening serum that fades dark spots, evens skin tone, and gives you that lit-from-within glow. Your morning weapon from Week 2 onwards.',
+        howToUse: 'In the morning, after cleansing, apply 2–3 drops to face and neck. Press gently into skin — don\'t rub. Follow with moisturiser.',
+        waitTime: 'Wait 30 seconds before applying moisturiser to let the serum absorb.',
         ingredients: ['Vitamin C 15% — clinical brightening at the effective concentration', 'Ferulic Acid — stabilises Vitamin C and boosts its effectiveness', 'Vitamin E — antioxidant protection, supports skin repair'],
         bestFor: 'All skin types targeting hyperpigmentation, dark spots, post-acne marks, and dullness.',
-        pairs: 'Use in the morning. Pairs safely with Niacinamide (the old myth about mixing them is false).',
-        tips: ['Store in a cool, dark place — Vitamin C oxidises in heat and light', 'If your serum turns orange/brown, it\'s oxidised — replace it', 'Don\'t use this at night; use the Niacinamide serum instead']
+        pairs: 'Morning use only. Follow with Moisturizer as the final step.',
+        tips: ['Store in a cool, dark place — Vitamin C oxidises in heat and light', 'If your serum turns orange/brown, it\'s oxidised — replace it', 'Apply to fully dry skin to minimise tingling']
       },
       niacinamideSerum: {
-        category: 'Serum (PM)', color: '#527056', initial: 'NI',
-        desc: 'A multi-tasking night serum that regulates oil, shrinks pores, fades dark marks, and strengthens your skin barrier while you sleep.',
-        howToUse: 'After toner in the evening, apply 3–4 drops to face and neck. Press into skin. Follow with moisturiser. Use nightly from Week 2 onwards.',
-        waitTime: 'Wait 60 seconds before moisturiser.',
+        category: 'Serum (AM)', color: '#527056', initial: 'NI',
+        desc: 'A gentle multi-tasking serum that regulates oil, minimises pores, and starts evening your skin tone. Your Week 1 morning foundation serum.',
+        howToUse: 'In the morning, after cleansing, apply 3–4 drops to face and neck. Press into skin gently. Follow with moisturiser.',
+        waitTime: 'Wait 30 seconds before moisturiser.',
         ingredients: ['Niacinamide 10% — pore-minimising, oil-regulating, brightening powerhouse', 'Zinc PCA — controls sebum, reduces breakouts', 'Panthenol (B5) — deep hydration and barrier repair'],
-        bestFor: 'Oily, acne-prone, and combination skin. Targets large pores, oiliness, and post-acne marks.',
-        pairs: 'Safe with Vitamin C (use them at different times: VC in AM, Niacinamide in PM). Pairs perfectly with moisturiser.',
-        tips: ['If you experience any flushing or redness, reduce to every other night', 'This is your most hardworking night product — don\'t skip it', 'The 10% concentration is the sweet spot — effective without irritating']
+        bestFor: 'All skin types. Especially effective for oily, acne-prone skin. Gentle enough for beginners.',
+        pairs: 'Morning use. Safe with all other products in the routine.',
+        tips: ['If you experience any flushing or redness, reduce to every other morning', 'The most beginner-friendly active serum — very low irritation risk', 'Can also be used as an evening serum if you want extra pore-care at night']
+      },
+      alphaArbutin: {
+        category: 'Serum (AM)', color: '#C4A882', initial: 'AA',
+        desc: 'A targeted brightening serum that fades stubborn dark spots and post-acne marks by inhibiting melanin production at the source.',
+        howToUse: 'In the morning, after cleansing, apply 2–3 drops to face focusing on dark spots. Press gently into skin. Follow with moisturiser.',
+        waitTime: 'Wait 30 seconds before moisturiser.',
+        ingredients: ['Alpha Arbutin 2% — inhibits tyrosinase to slow melanin production', 'Hyaluronic Acid — plumps and hydrates while brightening', 'Niacinamide — synergistic brightening and pore-minimising'],
+        bestFor: 'Hyperpigmentation, dark spots, post-acne marks, and uneven skin tone on all skin types.',
+        pairs: 'Morning use. Safe with Vitamin C. Can alternate with Vitamin C Serum.',
+        tips: ['Focus application on areas with dark spots for best results', 'Safe to use daily — very gentle despite its effectiveness', 'Results build over 4–8 weeks of consistent use']
+      },
+      hyaluronicAcid: {
+        category: 'Serum (AM)', color: '#89B4CC', initial: 'HA',
+        desc: 'A hydration powerhouse that draws water into the skin, plumps fine lines, and leaves your face looking dewy and full — all day.',
+        howToUse: 'In the morning, after cleansing, apply 2–3 drops to slightly damp skin. Press gently into face and neck. Follow immediately with moisturiser to lock in the hydration.',
+        waitTime: 'Apply moisturiser immediately — do not let it dry fully.',
+        ingredients: ['Hyaluronic Acid (multi-weight) — penetrates at multiple skin depths for layered hydration', 'Glycerin — humectant that draws moisture from the air', 'Aloe Vera — soothes and delivers instant surface hydration'],
+        bestFor: 'Dry, dehydrated skin. Anyone looking plumper, dewier skin. Works on all skin types.',
+        pairs: 'Apply to damp skin for maximum effect. Always seal with moisturiser immediately after.',
+        tips: ['Apply to damp skin — it draws in existing moisture, amplifying the effect', 'If you live in a dry climate, seal very quickly with moisturiser', 'Can be layered with other serums for maximum hydration']
       },
       moisturizer: {
-        category: 'Moisturiser', color: '#A8896A', initial: 'MO',
-        desc: 'A lightweight, non-greasy lotion that seals in your serum, strengthens your moisture barrier, and keeps skin soft and plump all day.',
-        howToUse: 'After serum (morning and evening), apply a small amount to face and neck. Use upward strokes. In the morning, follow with SPF. At night, this is your final step.',
-        waitTime: 'AM: apply SPF immediately after. PM: no further steps needed.',
+        category: 'Moisturizer', color: '#A8896A', initial: 'MO',
+        desc: 'A lightweight, non-greasy moisturizer that seals in your serum, strengthens your moisture barrier, and keeps skin soft and plump all day.',
+        howToUse: 'Morning: after serum, apply a small amount to face and neck in upward strokes. This is your final morning step. Evening: after toner, apply generously — night is when your skin repairs.',
+        waitTime: 'This is the final step — no waiting needed.',
         ingredients: ['Ceramides — rebuild and strengthen the skin barrier', 'Shea Butter — deeply nourishing, seals in moisture', 'Squalane — lightweight oil that mimics skin\'s natural sebum'],
-        bestFor: 'All skin types. Essential for dry and dehydrated skin. Even oily skin needs moisturiser.',
-        pairs: 'Always the second-to-last step in the morning (before SPF) and the final step at night.',
+        bestFor: 'All skin types. Essential for dry and dehydrated skin. Even oily skin needs moisturizer.',
+        pairs: 'Always the last step — morning and evening.',
         tips: ['Apply while skin is still slightly damp from serum — seals in more moisture', 'A little goes a long way — pea-sized to 5p coin is enough', 'Don\'t skip because your skin feels oily — skipping causes MORE oil production']
-      },
-      sunscreen: {
-        category: 'SPF 50', color: '#2E6DA4', initial: 'SP',
-        desc: 'A broad-spectrum SPF 50 that protects against UVA (ageing, dark spots) and UVB (burning) rays. The final — and most critical — morning step.',
-        howToUse: 'MORNING ONLY. Apply generously to face, neck, and any exposed skin as the very last step after moisturiser. Two finger-lengths is the minimum for full protection. Reapply every 2 hours outdoors.',
-        waitTime: 'No waiting — apply immediately after moisturiser.',
-        ingredients: ['Zinc Oxide — physical UV blocker, gentle on sensitive skin', 'Tinosorb S — chemical UV filter, photostable protection', 'Hyaluronic Acid — hydration so it doesn\'t feel heavy'],
-        bestFor: 'Everyone, every day. Non-negotiable for anyone targeting dark spots, hyperpigmentation, or anti-ageing.',
-        pairs: 'Always the last step in the morning. Never skip, even indoors or on cloudy days.',
-        tips: ['80% of UV rays pass through clouds — wear it every day', 'UVA rays (dark spots, ageing) come through windows too', 'Not using enough SPF is as bad as not wearing it — be generous']
-      },
-      eyeCream: {
-        category: 'Eye Treatment', color: '#8B6F47', initial: 'EC',
-        desc: 'A targeted eye cream that tackles dark circles, puffiness, and fine lines in the delicate under-eye area using gentle, proven actives.',
-        howToUse: 'After moisturiser, use your ring finger to gently tap (never rub) a grain-of-rice amount around the orbital bone. Use morning and evening.',
-        waitTime: 'Apply as final step or immediately before moisturiser.',
-        ingredients: ['Caffeine — depuffs by constricting blood vessels, reduces dark circles', 'Peptides — stimulate collagen, reduce fine lines', 'Vitamin K — strengthens capillary walls, fades dark circles'],
-        bestFor: 'Dark circles, puffiness, fine lines, and dehydration around the eye area.',
-        pairs: 'Keep separate from your regular face products — eye skin is 10x thinner and needs gentler care.',
-        tips: ['Ring finger only — it applies the least pressure automatically', 'Tap, don\'t rub — pulling the eye area causes premature lines', 'Store in the fridge for extra depuffing in the morning']
-      },
-      lipBalm: {
-        category: 'Lip Treatment', color: '#C47A2B', initial: 'LB',
-        desc: 'A rich Shea Butter lip balm that heals dry, flaky lips and keeps them soft and moisturised. The perfect final step of your night routine.',
-        howToUse: 'Apply generously to lips as the very last step of your night routine. Can also be used throughout the day. Gently exfoliate lips first with a soft toothbrush for best absorption.',
-        waitTime: 'This is the last step — no waiting needed.',
-        ingredients: ['Shea Butter — intensely nourishing, heals cracked lips', 'Vitamin E — antioxidant protection, promotes healing', 'Beeswax — forms a protective barrier to lock in moisture'],
-        bestFor: 'Dry, cracked, and pigmented lips. Great for anyone who wants a fuller appearance.',
-        pairs: 'Can be layered over any other lip product. Safe to use morning and night.',
-        tips: ['Apply before bed every night without fail for transformative results in 2 weeks', 'Don\'t lick your lips — it makes dryness worse', 'Gently remove dead skin with a soft toothbrush before applying for maximum effect']
       }
     };
 
@@ -1337,7 +1337,7 @@ const Views = {
       <!-- ── PRODUCT CARDS ── -->
       <div class="section" style="padding:var(--space-10) 0">
         <div class="container">
-          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-6)">All 8 Products</h2>
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-6)">The Full Product Range</h2>
           <div class="products-grid">
             ${productCards}
           </div>
@@ -1366,9 +1366,9 @@ const Views = {
               <svg data-lucide="message-circle" aria-hidden="true"></svg>
               Order via WhatsApp
             </a>
-            <a href="https://instagram.com/_its.g.o.o.d.i.e" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
+            <a href="https://instagram.com/Its_g.o.o.d.i.e" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
               <svg data-lucide="heart" aria-hidden="true"></svg>
-              @_its.g.o.o.d.i.e
+              @Its_g.o.o.d.i.e
             </a>
           </div>
         </div>
@@ -1385,9 +1385,9 @@ const Views = {
         icon: 'play-circle',
         items: [
           { q: 'I just received my products. Where do I start?', a: 'Go to Day 1 and take your before photos first — lighting, no filter, three angles. Then follow the Day 1 morning routine. Everything in the guide is ordered for you; just follow the daily prompts.' },
-          { q: 'Do I need all the products before I start?', a: 'No. The absolute minimum to start is cleanser, moisturiser, and sunscreen. Add other products as you get them. The guide will prompt you when each new product is introduced.' },
+          { q: 'Do I need all the products before I start?', a: 'No. The absolute minimum to start is cleanser and moisturiser. Add other products as you get them. The guide will prompt you when each new product is introduced.' },
           { q: 'Can I skip days or do them out of order?', a: 'You can skip days — life happens! Just pick up from the next day rather than restarting. The guide is cumulative, not a strict countdown. What matters is consistency over perfection.' },
-          { q: 'What if I\'ve never had a skincare routine before?', a: 'Perfect timing. Start slow — if 5 steps feels like too much in Week 1, do just cleanser + moisturiser + SPF. Build from there. Your skin will adapt within 7–10 days.' }
+          { q: 'What if I\'ve never had a skincare routine before?', a: 'Perfect timing. The routine is already 3 steps — cleanse, serum, moisturise. If even that feels like too much on Day 1, do just cleanser + moisturiser. Build from there. Your skin will adapt within 7–10 days.' }
         ]
       },
       {
@@ -1418,9 +1418,9 @@ const Views = {
         icon: 'calendar',
         items: [
           { q: 'I forgot to do my routine yesterday. Am I starting over?', a: 'Never restart. One missed day means zero lost progress. Your skin has already absorbed and benefited from every previous day. Just continue from today and keep going.' },
-          { q: 'Can I wear makeup while doing the programme?', a: 'Absolutely. Apply makeup after your SPF in the morning. The key is thorough cleansing at night — double cleansing (micellar water first, then face wash) is ideal if you wear heavy makeup.' },
+          { q: 'Can I wear makeup while doing the programme?', a: 'Absolutely. Apply makeup after your moisturiser in the morning. The key is thorough cleansing at night — double cleansing (micellar water first, then face wash) is ideal if you wear heavy makeup.' },
           { q: 'What if I\'m travelling during the 30 days?', a: 'Pack your essentials in travel-size bottles: cleanser, moisturiser, SPF are non-negotiable. The serums are your "nice to have." A simplified routine on travel days is better than skipping entirely.' },
-          { q: 'Can I do the morning and night routine at the same time?', a: 'You can do morning and night products together in an emergency, but it\'s not ideal. SPF in particular is not for night use. If you miss morning, just do the night routine and pick up normally tomorrow.' }
+          { q: 'Can I do the morning and night routine at the same time?', a: 'You can combine them in an emergency, but it\'s not ideal — morning and night serve different purposes. If you miss morning, just do the night routine and pick up normally tomorrow.' }
         ]
       },
       {
@@ -1482,8 +1482,8 @@ const Views = {
                 <svg data-lucide="message-circle" aria-hidden="true"></svg>
                 08063214942
               </a>
-              <a href="https://instagram.com/_its.g.o.o.d.i.e" class="btn btn--secondary btn--sm" target="_blank" rel="noopener noreferrer">
-                @_its.g.o.o.d.i.e
+              <a href="https://instagram.com/Its_g.o.o.d.i.e" class="btn btn--secondary btn--sm" target="_blank" rel="noopener noreferrer">
+                @Its_g.o.o.d.i.e
               </a>
             </div>
           </div>
@@ -1603,9 +1603,9 @@ const Views = {
           <h2>Join the Goodie Community</h2>
           <p>Share your progress, get tips, and celebrate with other Goodie Babes doing the 30-day journey. Tag us — we repost transformations!</p>
           <div class="cluster" style="justify-content:center;flex-wrap:wrap">
-            <a href="https://instagram.com/_its.g.o.o.d.i.e" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
+            <a href="https://instagram.com/Its_g.o.o.d.i.e" class="btn btn--secondary" style="color:white;border-color:rgba(255,255,255,0.4)" target="_blank" rel="noopener noreferrer">
               <svg data-lucide="heart" aria-hidden="true"></svg>
-              Follow @_its.g.o.o.d.i.e
+              Follow @Its_g.o.o.d.i.e
             </a>
             <span class="btn btn--ghost" style="color:rgba(255,255,255,0.7);cursor:default">
               #GoodieGlowUp
@@ -2235,7 +2235,7 @@ const GoodieApp = {
         <div class="pr-photos">${photoHTML}</div>
 
         <footer class="pr-ft">
-          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @_its.g.o.o.d.i.e
+          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @Its_g.o.o.d.i.e
         </footer>
       </div>`;
 
@@ -2306,7 +2306,7 @@ const GoodieApp = {
         </div>
 
         <footer class="pr-ft">
-          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @_its.g.o.o.d.i.e
+          Goodie Beauty &amp; Skincare &bull; 08063214942 &bull; @Its_g.o.o.d.i.e
         </footer>
       </div>`;
 

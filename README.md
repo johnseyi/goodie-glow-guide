@@ -105,7 +105,7 @@ goodie-glow-guide/
 | Channel     | Details                      |
 |-------------|------------------------------|
 | Phone       | 08063214942                  |
-| Instagram   | [@_its.g.o.o.d.i.e](https://instagram.com/_its.g.o.o.d.i.e) |
+| Instagram   | [@Its_g.o.o.d.i.e](https://instagram.com/Its_g.o.o.d.i.e) |
 
 ---
 

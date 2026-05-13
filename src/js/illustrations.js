@@ -234,6 +234,7 @@
     // Flat step-slug keys (match content.js step names exactly)
     'cleanse':           cleanse,
     'tone':              tone,
+    'serum':             vitaminCSerum,  // generic serum → golden dropper
     'vitamin-c-serum':   vitaminCSerum,
     'niacinamide-serum': niacinamideSerum,
     'moisturize':        moisturize,
