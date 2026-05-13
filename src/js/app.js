@@ -2,10 +2,10 @@
  * Goodie Glow Guide — Main Application
  * Initialises routing, navigation, and page rendering.
  *
- * No ES module imports — content.js is loaded as a plain script before
- * this file and exposes window.GoodieContent. This lets the app work
- * when opened directly via file:// without a local dev server.
+ * Wrapped in an IIFE so all module-level consts (including `content`) are
+ * scoped here and can never collide with globals set by content.js.
  */
+(function () {
 
 // content is set by content.js (loaded before this script in index.html)
 const content = window.GoodieContent;
@@ -98,7 +98,7 @@ const Progress = {
   },
 
   getDayChecks(day) {
-    return this.getState().routineChecks?.[day] ?? { morning: [], night: [] };
+    return this.getState().routineChecks?.[day] ?? { morning: [], night: [], remedy: false };
   },
 
   toggleStep(day, period, step, checked) {
@@ -139,6 +139,18 @@ const Progress = {
       }
       this.saveState();
       GoodieApp._onDayComplete(dayNumber);
+    }
+  },
+
+  // Saves completion without triggering a re-render (used by the complete button)
+  markDayCompleteQuiet(dayNumber) {
+    const state = this.getState();
+    if (!state.completedDays.includes(dayNumber)) {
+      state.completedDays.push(dayNumber);
+      if (dayNumber === state.currentDay && dayNumber < 30) {
+        state.currentDay = dayNumber + 1;
+      }
+      this.saveState();
     }
   }
 };
@@ -405,62 +417,130 @@ const Views = {
     const isComplete = Progress.isDayComplete(dayNumber);
     const isLocked   = Progress.isDayLocked(dayNumber);
 
+    // ── Step item builder ──────────────────────
     const buildStepItem = (step, period) => {
-      const done = checks[period]?.includes(step.step);
+      const done  = checks[period]?.includes(step.step) ?? false;
+      const id    = `chk-${dayNumber}-${period}-${step.step}`;
       return `
         <li class="routine-checklist__item">
-          <label class="checkbox-item ${done ? 'is-checked' : ''}">
+          <label class="checkbox-item ${done ? 'is-checked' : ''}" for="${id}">
             <input
               class="checkbox-item__input routine-checklist__input"
               type="checkbox"
-              id="day${dayNumber}-${period}-${step.step}"
+              id="${id}"
               ${done ? 'checked' : ''}
               ${isComplete ? 'disabled' : ''}
               data-day="${dayNumber}"
               data-period="${period}"
               data-step="${step.step}"
-              aria-describedby="hint-${dayNumber}-${period}-${step.step}"
             >
             <span class="checkbox-item__label">
-              <span class="step-name">${_cap(step.step)} — ${step.product}</span>
-              <span class="step-details" id="hint-${dayNumber}-${period}-${step.step}">
-                ${step.duration} &nbsp;·&nbsp; ${step.instructions}
-              </span>
+              <span class="step-name">${_cap(step.step.replace(/-/g,' '))} — ${step.product}</span>
+              <span class="step-meta">${step.duration}</span>
             </span>
           </label>
+          <details class="step-details-panel"${done ? ' open' : ''}>
+            <summary aria-label="How to: ${step.product}">
+              <span>How to</span>
+              <svg data-lucide="chevron-down" aria-hidden="true"></svg>
+            </summary>
+            <p class="step-details-panel__body">${step.instructions}</p>
+          </details>
         </li>`;
     };
 
-    const morningSteps = day.morning.map(s => buildStepItem(s, 'morning')).join('');
-    const nightSteps   = day.night.map(s => buildStepItem(s, 'night')).join('');
+    // ── Routine section builder ────────────────
+    const buildRoutine = (steps, period, label, icon) => {
+      const doneCount  = steps.filter(s => checks[period]?.includes(s.step)).length;
+      const allDone    = doneCount === steps.length;
+      return `
+        <fieldset class="routine-checklist" id="${period}-routine">
+          <legend class="routine-checklist__legend">
+            <svg data-lucide="${icon}" aria-hidden="true"></svg>
+            ${label}
+            <span class="routine-checklist__counter${allDone ? ' is-done' : ''}" id="${period}-counter">${doneCount}/${steps.length}</span>
+          </legend>
+          <ul class="routine-checklist__list" role="list">
+            ${steps.map(s => buildStepItem(s, period)).join('')}
+          </ul>
+        </fieldset>`;
+    };
 
-    const avoidItems = day.avoid.map(a => `<li>${a}</li>`).join('');
-
-    const specialNote = day.specialNote ? `
-      <div class="special-note animate-fade-in" role="note">
-        <svg data-lucide="info" class="icon-md icon-primary" aria-hidden="true" style="display:inline;vertical-align:middle;margin-right:6px"></svg>
-        ${day.specialNote}
-      </div>` : '';
-
+    // ── Natural remedy ─────────────────────────
+    const remedyDone = checks.remedy === true;
     const remedy = day.naturalRemedy ? `
       <div class="remedy-box animate-slide-up">
-        <p class="remedy-box__title">${day.naturalRemedy.name}</p>
+        <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-3)">
+          <svg data-lucide="leaf" style="width:20px;height:20px;color:var(--color-secondary)" aria-hidden="true"></svg>
+          <p class="remedy-box__title" style="margin:0">${day.naturalRemedy.name}</p>
+        </div>
         <p class="remedy-box__timing">When: ${day.naturalRemedy.timing}</p>
         <p class="remedy-box__subtitle">You'll need</p>
         <ul>${day.naturalRemedy.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
         <p class="remedy-box__subtitle">Steps</p>
         <ol>${day.naturalRemedy.instructions.map(i => `<li>${i}</li>`).join('')}</ol>
         <p class="remedy-box__benefits">${day.naturalRemedy.benefits}</p>
+        ${!isComplete ? `
+        <label class="remedy-done" for="remedy-done-${dayNumber}">
+          <input
+            type="checkbox"
+            class="checkbox-item__input"
+            id="remedy-done-${dayNumber}"
+            ${remedyDone ? 'checked' : ''}
+            data-day="${dayNumber}"
+            data-period="remedy"
+            data-step="remedy"
+          >
+          I did this treatment today
+        </label>` : ''}
       </div>` : '';
 
+    // ── Photo upload card (Days 1, 10, 20, 30) ─
+    const photoDay = [1, 10, 20, 30].includes(dayNumber) || day.hasPhotoPrompt;
+    const savedPhoto = Storage.get(`photo_day${dayNumber}`);
+    const photoLabel = dayNumber === 1 ? 'Before photo' : dayNumber === 30 ? 'After photo' : 'Progress photo';
+    const photoCard = photoDay ? `
+      <div class="photo-card animate-slide-up">
+        <div class="photo-card__header">
+          <svg data-lucide="camera" aria-hidden="true"></svg>
+          <h3>${photoLabel} — Day ${dayNumber}</h3>
+        </div>
+        <p class="text-secondary" style="font-size:var(--text-sm);margin-bottom:var(--space-4)">
+          Natural lighting, same spot each time. This is your glow record.
+        </p>
+        ${savedPhoto ? `
+          <div class="photo-card__preview">
+            <img src="${savedPhoto}" alt="Your Day ${dayNumber} progress photo" class="photo-card__img">
+            <button class="btn btn--ghost btn--sm photo-card__delete" data-delete-photo="${dayNumber}" aria-label="Remove Day ${dayNumber} photo">
+              <svg data-lucide="trash-2" aria-hidden="true"></svg> Remove
+            </button>
+          </div>` : `
+          <label class="photo-upload" for="photo-input-${dayNumber}">
+            <svg data-lucide="upload-cloud" aria-hidden="true"></svg>
+            <span>Tap to add photo</span>
+            <input type="file" id="photo-input-${dayNumber}" accept="image/*" capture="environment"
+              class="photo-upload__input" data-photo-day="${dayNumber}"
+              aria-label="Upload Day ${dayNumber} progress photo">
+          </label>`}
+      </div>` : '';
+
+    // ── Special note ───────────────────────────
+    const specialNote = day.specialNote ? `
+      <div class="special-note animate-fade-in" role="note">
+        <svg data-lucide="info" class="icon-md icon-primary" aria-hidden="true"
+          style="display:inline;vertical-align:middle;margin-right:6px"></svg>
+        ${day.specialNote}
+      </div>` : '';
+
+    // ── Banners ────────────────────────────────
     const completeBanner = isComplete ? `
-      <div class="card" style="background:linear-gradient(135deg,#f0f7f1,#fff);border-color:var(--color-success);border-left:4px solid var(--color-success);text-align:center;padding:var(--space-8)" role="status">
-        <svg data-lucide="check-circle" style="width:48px;height:48px;color:var(--color-success);margin:0 auto var(--space-3)" aria-hidden="true"></svg>
-        <h3 style="color:var(--color-success)">Day ${dayNumber} Complete!</h3>
-        <p class="text-secondary">Well done. Your skin thanks you.</p>
+      <div class="complete-banner" role="status">
+        <svg data-lucide="check-circle" class="complete-icon" aria-hidden="true"></svg>
+        <h3>Day ${dayNumber} Complete!</h3>
+        <p>Your skin thanks you. Keep the momentum going.</p>
         ${dayNumber < 30
-          ? `<a href="#/day/${dayNumber + 1}" class="btn btn--primary mt-4">Day ${dayNumber + 1} →</a>`
-          : `<a href="#/progress" class="btn btn--accent mt-4 animate-pulse-glow">See Your Transformation</a>`
+          ? `<a href="#/day/${dayNumber + 1}" class="btn btn--primary">Continue to Day ${dayNumber + 1} →</a>`
+          : `<a href="#/progress" class="btn btn--accent animate-pulse-glow">See Your Full Transformation</a>`
         }
       </div>` : '';
 
@@ -472,8 +552,45 @@ const Views = {
         <a href="#/day/${Progress.getCurrentDay()}" class="btn btn--primary mt-4">Go to Current Day</a>
       </div>` : '';
 
-    const prevDay = dayNumber > 1  ? `<a href="#/day/${dayNumber - 1}" class="btn btn--ghost btn--sm day-nav__btn" aria-label="Go to Day ${dayNumber - 1}"><svg data-lucide="chevron-left" aria-hidden="true"></svg> Day ${dayNumber - 1}</a>` : '';
-    const nextDay = dayNumber < 30 ? `<a href="#/day/${dayNumber + 1}" class="btn btn--ghost btn--sm day-nav__btn" aria-label="Go to Day ${dayNumber + 1}">Day ${dayNumber + 1} <svg data-lucide="chevron-right" aria-hidden="true"></svg></a>` : '';
+    // ── Nav arrows ─────────────────────────────
+    const prevDay = dayNumber > 1
+      ? `<a href="#/day/${dayNumber - 1}" class="btn btn--ghost btn--sm" aria-label="Go to Day ${dayNumber - 1}">
+           <svg data-lucide="chevron-left" aria-hidden="true"></svg> Day ${dayNumber - 1}
+         </a>` : '';
+    const nextDay = dayNumber < 30
+      ? `<a href="#/day/${dayNumber + 1}" class="btn btn--ghost btn--sm" aria-label="Go to Day ${dayNumber + 1}">
+           Day ${dayNumber + 1} <svg data-lucide="chevron-right" aria-hidden="true"></svg>
+         </a>` : '';
+
+    // ── Progress ring ──────────────────────────
+    const completedCount = Progress.getCompletedCount();
+    const ringOffset = 326.73 - (326.73 * (completedCount / 30));
+
+    // ── Complete button bar ────────────────────
+    const totalSteps = day.morning.length + day.night.length;
+    const doneSteps  = (checks.morning?.length ?? 0) + (checks.night?.length ?? 0);
+    const canComplete = !isComplete && !isLocked && doneSteps >= totalSteps;
+
+    const completeBar = !isComplete && !isLocked ? `
+      <div class="day-complete-bar" id="day-complete-bar">
+        <div class="container">
+          <div class="day-complete-bar__inner">
+            <p class="day-complete-bar__status">
+              <strong id="step-counter">${doneSteps}/${totalSteps}</strong> steps done
+            </p>
+            <button
+              class="btn btn--primary"
+              id="mark-complete-btn"
+              data-day="${dayNumber}"
+              ${canComplete ? '' : 'disabled'}
+              aria-label="Mark Day ${dayNumber} as complete"
+            >
+              <svg data-lucide="check-circle" aria-hidden="true"></svg>
+              Mark Day ${dayNumber} Complete
+            </button>
+          </div>
+        </div>
+      </div>` : '';
 
     this._render(`
       <!-- ── DAY HEADER ── -->
@@ -482,10 +599,10 @@ const Views = {
           <div>
             <div class="day-header__meta">
               <span class="badge badge--week day-header__badge">Week ${day.week} · ${day.phase}</span>
-              ${isComplete ? '<span class="badge badge--success">Complete</span>' : ''}
+              ${isComplete ? '<span class="badge badge--success">✓ Complete</span>' : ''}
             </div>
             <h1 class="day-header__title">Day ${day.day} — ${day.title}</h1>
-            <p class="day-header__subtitle">Your ${day.phase.toLowerCase()} phase continues.</p>
+            <p class="day-header__subtitle">${day.phase} phase · Week ${day.week} of 4</p>
           </div>
           <nav class="day-nav" aria-label="Day navigation">
             ${prevDay}
@@ -494,47 +611,40 @@ const Views = {
         </div>
       </header>
 
+      <!-- ── SWIPE HINT (mobile) ── -->
+      <p class="swipe-hint" aria-hidden="true">
+        <svg data-lucide="chevron-left" aria-hidden="true"></svg>
+        Swipe or use arrow keys to change days
+        <svg data-lucide="chevron-right" aria-hidden="true"></svg>
+      </p>
+
       <!-- ── DAY CONTENT ── -->
-      <div class="section">
+      <div class="section" style="padding-top:var(--space-8)">
         <div class="container">
           <div class="sidebar-layout">
 
-            <!-- Main column: routines -->
+            <!-- Main: routines -->
             <div class="sidebar-layout__main stack" style="--stack-gap:var(--space-8)">
 
               ${lockedBanner}
               ${completeBanner}
 
-              ${!isLocked && !isComplete ? `
-              <!-- Morning routine -->
-              <fieldset class="routine-checklist" id="morning-routine">
-                <legend class="routine-checklist__legend">
-                  <svg data-lucide="sun" aria-hidden="true"></svg>
-                  Morning Routine
-                </legend>
-                <ul class="routine-checklist__list" role="list">${morningSteps}</ul>
-              </fieldset>
-
-              <!-- Night routine -->
-              <fieldset class="routine-checklist" id="night-routine">
-                <legend class="routine-checklist__legend">
-                  <svg data-lucide="moon" aria-hidden="true"></svg>
-                  Night Routine
-                </legend>
-                <ul class="routine-checklist__list" role="list">${nightSteps}</ul>
-              </fieldset>
+              ${!isLocked ? `
+                ${buildRoutine(day.morning, 'morning', 'Morning Routine', 'sun')}
+                ${buildRoutine(day.night,   'night',   'Night Routine',   'moon')}
               ` : ''}
 
               ${remedy}
+              ${photoCard}
 
             </div>
 
-            <!-- Sidebar: tip + avoid + note -->
-            <aside class="sidebar-layout__aside stack" style="--stack-gap:var(--space-6)" aria-label="Day guidance">
+            <!-- Sidebar: ring + tip + avoid + note -->
+            <aside class="sidebar-layout__aside stack" style="--stack-gap:var(--space-5)" aria-label="Day guidance">
 
               <!-- Progress ring -->
-              <div class="card text-center" aria-hidden="true">
-                <svg class="progress-ring" viewBox="0 0 120 120" width="100" height="100" style="margin:0 auto">
+              <div class="card text-center" aria-label="${completedCount} of 30 days complete">
+                <svg class="progress-ring" viewBox="0 0 120 120" width="110" height="110" style="margin:0 auto;display:block">
                   <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-bg-muted)" stroke-width="8"/>
                   <circle
                     class="progress-ring__fill"
@@ -544,16 +654,16 @@ const Views = {
                     stroke-width="8"
                     stroke-linecap="round"
                     stroke-dasharray="326.73"
-                    stroke-dashoffset="${326.73 - (326.73 * ((dayNumber - 1) / 30))}"
+                    stroke-dashoffset="${ringOffset}"
                     transform="rotate(-90 60 60)"
                   />
-                  <text class="progress-ring__day"   x="60" y="52" text-anchor="middle" dominant-baseline="middle">Day</text>
+                  <text class="progress-ring__day"    x="60" y="50" text-anchor="middle" dominant-baseline="middle">Day</text>
                   <text class="progress-ring__number" x="60" y="72" text-anchor="middle" dominant-baseline="middle">${dayNumber}</text>
                 </svg>
-                <p class="text-muted" style="font-size:var(--text-sm);margin-top:var(--space-2)">of 30</p>
+                <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2)">${completedCount}/30 complete</p>
               </div>
 
-              <!-- Tip -->
+              <!-- Today's tip -->
               <div class="tip-box">
                 <p class="tip-box__label">
                   <svg data-lucide="sparkles" aria-hidden="true"></svg>
@@ -562,13 +672,15 @@ const Views = {
                 <p>${day.tip}</p>
               </div>
 
-              <!-- Avoid -->
+              <!-- What to avoid -->
               <div class="card">
                 <h3 style="font-size:var(--text-base);margin-bottom:var(--space-3);display:flex;align-items:center;gap:var(--space-2)">
                   <svg data-lucide="alert-circle" class="icon-md" style="color:var(--color-warning)" aria-hidden="true"></svg>
                   Skip These Today
                 </h3>
-                <ul class="avoid-list" role="list">${avoidItems}</ul>
+                <ul class="avoid-list" role="list">
+                  ${day.avoid.map(a => `<li>${a}</li>`).join('')}
+                </ul>
               </div>
 
               ${specialNote}
@@ -579,15 +691,18 @@ const Views = {
                 class="btn btn--whatsapp btn--full"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Chat with Goodie on WhatsApp about Day ${dayNumber}"
               >
                 <svg data-lucide="message-circle" aria-hidden="true"></svg>
-                Question? Chat with Goodie
+                Need Help? Chat with Goodie
               </a>
 
             </aside>
           </div>
         </div>
       </div>
+
+      ${completeBar}
     `);
   },
 
@@ -768,6 +883,8 @@ const GoodieApp = {
   init() {
     this._setupNavigation();
     this._updateFooterYear();
+    this._setupKeyboardNav();
+    this._setupSwipeNav();
     Router.init();
   },
 
@@ -855,30 +972,126 @@ const GoodieApp = {
     document.querySelectorAll('.routine-checklist__input').forEach(input => {
       input.addEventListener('change', (e) => {
         const { day, period, step } = e.target.dataset;
+
+        // Remedy checkbox is tracked separately
+        if (period === 'remedy') {
+          const state = Progress.getState();
+          if (!state.routineChecks[day]) state.routineChecks[day] = { morning: [], night: [] };
+          state.routineChecks[day].remedy = e.target.checked;
+          Progress.saveState();
+          return;
+        }
+
         Progress.toggleStep(day, period, step, e.target.checked);
 
-        // Update label strikethrough immediately
         const label = e.target.closest('.checkbox-item');
         if (label) label.classList.toggle('is-checked', e.target.checked);
 
-        // Update progress ring text
-        this._refreshProgressRing();
+        this._refreshCompleteBar(parseInt(day));
+      });
+    });
+
+    // Mark complete button
+    const completeBtn = document.getElementById('mark-complete-btn');
+    if (completeBtn) {
+      completeBtn.addEventListener('click', () => {
+        const dayNum = parseInt(completeBtn.dataset.day);
+        Progress.markDayCompleteQuiet(dayNum);
+        _launchConfetti();
+        _showToast(dayNum < 30
+          ? `Day ${dayNum} done! Keep glowing — Day ${dayNum + 1} is next.`
+          : 'Day 30 complete! You did it. Welcome to the glow side!', 'success');
+        completeBtn.disabled = true;
+        completeBtn.innerHTML = '<svg data-lucide="check" aria-hidden="true"></svg> Day Complete!';
+        if (window.lucide) window.lucide.createIcons();
+        setTimeout(() => {
+          Router.navigate(dayNum < 30 ? `/day/${dayNum + 1}` : '/progress');
+        }, 2200);
+      });
+    }
+
+    // Photo upload
+    document.querySelectorAll('.photo-upload__input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const dayNum = parseInt(e.target.dataset.photoDay);
+        _compressImage(file, (dataUrl) => {
+          try {
+            Storage.set(`photo_day${dayNum}`, dataUrl);
+            Views.renderDay(dayNum); // re-render to show preview
+          } catch {
+            _showToast('Photo too large to save. Try a smaller image.', 'warning');
+          }
+        });
+      });
+    });
+
+    // Photo delete
+    document.querySelectorAll('[data-delete-photo]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dayNum = parseInt(btn.dataset.deletePhoto);
+        Storage.remove(`photo_day${dayNum}`);
+        Views.renderDay(dayNum);
       });
     });
   },
 
-  _refreshProgressRing() {
-    const ring = document.querySelector('.progress-ring__fill');
-    const pct  = Progress.getCompletionPercentage();
-    if (ring) {
-      const circumference = 326.73;
-      ring.style.strokeDashoffset = circumference - (circumference * pct / 100);
-    }
+  _refreshCompleteBar(dayNumber) {
+    const btn = document.getElementById('mark-complete-btn');
+    if (!btn) return;
+    const day = content.days.find(d => d.day === dayNumber);
+    if (!day) return;
+
+    const checks     = Progress.getDayChecks(dayNumber);
+    const totalSteps = day.morning.length + day.night.length;
+    const doneSteps  = (checks.morning?.length ?? 0) + (checks.night?.length ?? 0);
+
+    btn.disabled = doneSteps < totalSteps;
+
+    const counter = document.getElementById('step-counter');
+    if (counter) counter.textContent = `${doneSteps}/${totalSteps}`;
+
+    // Update per-routine counters
+    ['morning', 'night'].forEach(period => {
+      const el = document.getElementById(`${period}-counter`);
+      if (!el) return;
+      const periodSteps = period === 'morning' ? day.morning.length : day.night.length;
+      const done = checks[period]?.length ?? 0;
+      el.textContent = `${done}/${periodSteps}`;
+      el.classList.toggle('is-done', done === periodSteps);
+    });
+  },
+
+  // ── Keyboard navigation (← → between days) ──
+  _setupKeyboardNav() {
+    document.addEventListener('keydown', (e) => {
+      const hash = window.location.hash;
+      if (!hash.startsWith('#/day/')) return;
+      const day = parseInt(hash.replace('#/day/', ''));
+      if (isNaN(day)) return;
+      if (e.key === 'ArrowRight' && day < 30) { e.preventDefault(); Router.navigate(`/day/${day + 1}`); }
+      if (e.key === 'ArrowLeft'  && day > 1)  { e.preventDefault(); Router.navigate(`/day/${day - 1}`); }
+    });
+  },
+
+  // ── Swipe navigation ─────────────────────────
+  _setupSwipeNav() {
+    let startX = 0;
+    document.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      const hash = window.location.hash;
+      if (!hash.startsWith('#/day/')) return;
+      const day  = parseInt(hash.replace('#/day/', ''));
+      const diff = e.changedTouches[0].screenX - startX;
+      if (Math.abs(diff) < 60) return; // ignore small swipes
+      if (diff < 0 && day < 30) Router.navigate(`/day/${day + 1}`); // swipe left → next
+      if (diff > 0 && day > 1)  Router.navigate(`/day/${day - 1}`); // swipe right → prev
+    }, { passive: true });
   },
 
   // ── Day completion callback ──────────────────
   _onDayComplete(dayNumber) {
-    // Re-render the day view to show the completion banner
     Views.renderDay(dayNumber);
   },
 
@@ -894,9 +1107,68 @@ const GoodieApp = {
 // HELPERS
 // ─────────────────────────────────────────────
 
-// Capitalise first letter
 function _cap(str) {
   return str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+}
+
+// Toast notification
+function _showToast(message, type) {
+  type = type || 'success';
+  var toast = document.getElementById('goodie-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'goodie-toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.className = 'toast toast--' + type + ' is-visible';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function() { toast.classList.remove('is-visible'); }, 3500);
+}
+
+// Confetti burst
+function _launchConfetti() {
+  var colors = ['#8B6F47', '#D4AF37', '#6B8E6F', '#FAF8F5', '#C47A2B', '#ffffff'];
+  for (var i = 0; i < 60; i++) {
+    (function(i) {
+      var p = document.createElement('div');
+      p.className = 'confetti-particle';
+      var size = 4 + Math.random() * 8;
+      p.style.cssText = [
+        'left:' + (Math.random() * 100) + '%',
+        'background:' + colors[Math.floor(Math.random() * colors.length)],
+        'width:' + size + 'px',
+        'height:' + size + 'px',
+        'animation-delay:' + (Math.random() * 400) + 'ms',
+        'animation-duration:' + (700 + Math.random() * 900) + 'ms',
+        'border-radius:' + (Math.random() > 0.5 ? '50%' : '2px')
+      ].join(';');
+      document.body.appendChild(p);
+      p.addEventListener('animationend', function() { p.remove(); });
+    }(i));
+  }
+}
+
+// Compress image to base64 JPEG, max 400px on longest side
+function _compressImage(file, callback) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var MAX = 400;
+      var w = img.width, h = img.height;
+      if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
+      else        { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
+      var canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', 0.65));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
 
@@ -907,15 +1179,26 @@ function _cap(str) {
 // time the browser executes it the entire DOM is already built. No
 // DOMContentLoaded listener is needed — just run immediately.
 (function boot() {
+  var main = document.getElementById('main');
+
+  function showError(msg) {
+    if (main) main.innerHTML = '<div style="padding:2rem;font-family:sans-serif"><strong style="color:red">Boot error:</strong><pre style="white-space:pre-wrap;font-size:13px;margin-top:8px">' + msg + '</pre></div>';
+    console.error('[Goodie] Boot error:', msg);
+  }
+
   if (!content) {
-    // content.js failed or loaded out of order
-    var el = document.getElementById('main');
-    if (el) el.innerHTML = '<div class="empty-state section"><h3>Could not load content</h3><p>Please refresh the page. If the problem persists, try opening the file from a local server.</p></div>';
-    console.error('[Goodie] window.GoodieContent is not set. Make sure content.js loads before app.js.');
+    showError('window.GoodieContent is not set — content.js may have failed to load or ran out of order.');
     return;
   }
-  GoodieApp.init();
-  // Lucide loads async — call createIcons now if already available,
-  // otherwise the onload handler on the <script> tag handles it.
+
+  try {
+    GoodieApp.init();
+  } catch (e) {
+    showError(e.stack || e.message || String(e));
+    return;
+  }
+
   if (window.lucide) window.lucide.createIcons();
 }());
+
+}()); // end app IIFE

@@ -1,0 +1,12 @@
+{
+  "name": "goodie-glow-guide",
+  "version": "1.0.0",
+  "description": "Interactive 30-day skincare guide for Goodie Beauty & Skincare",
+  "scripts": {
+    "start": "npx http-server src -p 3000 -o --cors -c-1",
+    "dev": "npx http-server src -p 3000 -o --cors -c-1"
+  },
+  "keywords": ["skincare", "goodie", "beauty"],
+  "author": "Goodie Beauty & Skincare",
+  "license": "UNLICENSED"
+}
