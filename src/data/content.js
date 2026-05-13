@@ -2,12 +2,8 @@
  * Goodie Glow Guide — 30-Day Skincare Content
  * Complete routine data for all 30 days, organised into 4 weeks.
  *
- * Structure per day:
- *   day, week, phase, title, morning[], night[], tip, avoid[],
- *   specialNote?, naturalRemedy?, hasPhotoPrompt?, imageKey
- *
- * Morning: Cleanse → Serum → Moisturize
- * Night:   Cleanse → Tone  → Moisturize
+ * Morning: Cleanse → Serum → Moisturize → Sunscreen (4 steps)
+ * Night:   Cleanse → Tone  → Moisturize             (3 steps)
  */
 
 const content = {
@@ -21,8 +17,8 @@ const content = {
       title: "Foundation Week",
       phase: "Foundation",
       focus: "Build Your Base Routine",
-      description: "Keep it simple. Three steps, twice a day: cleanse, treat, moisturise. By Day 7 this will feel as natural as brushing your teeth.",
-      goal: "Establish consistency and let your skin adjust to a clean, treated baseline.",
+      description: "Keep it simple. Four steps in the morning, three at night. By Day 7 this will feel as natural as brushing your teeth.",
+      goal: "Establish consistency and let your skin adjust to a clean, treated, and protected baseline.",
       days: [1, 2, 3, 4, 5, 6, 7]
     },
     {
@@ -65,7 +61,8 @@ const content = {
     niacinamideSerum: { id: "niacinamideSerum",  name: "Niacinamide Serum",         use: "AM serum (Week 1)" },
     alphaArbutin:     { id: "alphaArbutin",      name: "Alpha Arbutin Serum",       use: "AM serum (optional upgrade)" },
     hyaluronicAcid:   { id: "hyaluronicAcid",   name: "Hyaluronic Acid Serum",     use: "AM serum (hydration focus)" },
-    moisturizer:      { id: "moisturizer",       name: "Moisturizer",               use: "AM + PM (last step)" }
+    moisturizer:      { id: "moisturizer",       name: "Moisturizer",               use: "AM + PM" },
+    sunscreen:        { id: "sunscreen",         name: "SPF 50+ Sunscreen",         use: "Sun protection (AM only — last step)" }
   },
 
   // ─────────────────────────────────────────────
@@ -93,13 +90,19 @@ const content = {
           step: "serum",
           product: "Niacinamide Serum",
           duration: "1 minute",
-          instructions: "Apply 3–4 drops onto clean skin. Press gently with your palms — don't rub. Niacinamide works to even your skin tone and minimise pores. Let it absorb for 30 seconds before moisturising."
+          instructions: "Apply 3–4 drops onto clean skin. Press gently with your palms — don't rub. Let absorb for 30 seconds before moisturising."
         },
         {
           step: "moisturize",
           product: "Moisturizer",
           duration: "1 minute",
-          instructions: "While your face is still slightly damp, take a pea-sized amount. Apply in upward strokes — always up, never down. Work from chin to forehead. Don't forget your neck — it shows age just as much as your face!"
+          instructions: "While your face is still slightly damp, take a pea-sized amount. Apply in upward strokes — always up, never down. Work from chin to forehead. Don't forget your neck!"
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length to your face and neck — this is non-negotiable. Use 15 minutes before going outside. Yes, even on cloudy days. UV rays don't take days off."
         }
       ],
       night: [
@@ -113,7 +116,7 @@ const content = {
           step: "tone",
           product: "Hydrating Toner",
           duration: "30 seconds",
-          instructions: "Soak a cotton pad with toner. Swipe gently from centre of face outward — cheeks, forehead, chin, neck. Balances your skin's pH after cleansing and preps it to absorb moisturiser better. It should feel cool and refreshing."
+          instructions: "Soak a cotton pad with toner. Swipe gently from centre of face outward — cheeks, forehead, chin, neck. Balances your skin's pH and preps it for moisturiser."
         },
         {
           step: "moisturize",
@@ -122,12 +125,12 @@ const content = {
           instructions: "Night-time is when your skin does its repair work. Use a slightly more generous amount than morning and apply in upward strokes. Lock it all in."
         }
       ],
-      tip: "Don't overthink it. Two minutes in the morning, two minutes at night — that's all Week 1 asks of you. The magic isn't in the products alone, it's in the consistency. Show up for your skin every single day this week.",
+      tip: "Don't overthink it. Four steps in the morning, three at night — that's all Week 1 asks of you. The magic isn't in the products alone, it's in the consistency. Show up for your skin every single day this week.",
       avoid: [
         "Scrubbing your face hard — your skin is delicate, not a saucepan",
         "Using hot water — it strips your skin's natural oils",
         "Adding extra products you already own — stick to the plan this week",
-        "Picking at spots with your fingernails"
+        "Skipping sunscreen because you're indoors — UVA rays come through windows"
       ],
       specialNote: "BEFORE PHOTOS! Take three shots in natural light: front view, left side, right side. Save them somewhere you won't accidentally delete. You will want these on Day 30 — trust us.",
       hasPhotoPrompt: true,
@@ -157,6 +160,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Damp face, pea-sized amount, upward strokes from chin to forehead. Neck too!"
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -184,7 +193,7 @@ const content = {
         "Expecting overnight results — skin takes time",
         "Skipping night routine because you're tired — set a reminder if needed",
         "Over-washing (more than twice a day strips your skin)",
-        "Using your phone screen as a mirror while applying products"
+        "Skipping sunscreen on your second day — consistency starts now"
       ],
       imageKey: "morning"
     },
@@ -212,6 +221,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Pea-sized amount on damp skin. Upward strokes, include neck."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -225,7 +240,7 @@ const content = {
           step: "tone",
           product: "Hydrating Toner",
           duration: "30 seconds",
-          instructions: "Cotton pad, swipe outward. Tonight, hold the pad over each cheek for 3 seconds — let the hydration really sink in."
+          instructions: "Cotton pad, swipe outward. Hold the pad over each cheek for 3 seconds — let the hydration sink in."
         },
         {
           step: "moisturize",
@@ -234,12 +249,12 @@ const content = {
           instructions: "Lock it all in. Sleep is when your skin heals — give it the moisture it needs."
         }
       ],
-      tip: "Your Niacinamide Serum is quietly doing a lot of work already — minimising pores, regulating oil, and beginning the process of evening your skin tone. You won't see dramatic change yet, but it's happening underneath. Three days of consistency is the start of something real.",
+      tip: "Your Niacinamide Serum is quietly doing a lot of work already — minimising pores, regulating oil, and beginning to even your skin tone. You won't see dramatic change yet, but it's happening underneath. Three days of consistency is the start of something real.",
       avoid: [
         "Skipping your serum because you're in a rush — it's the step that does the most work",
         "Applying moisturiser to a completely dry face",
         "Reusing a towel that hasn't been washed recently — bacteria is real",
-        "Going to bed without your night routine"
+        "Skipping sunscreen on cool or cloudy days — UV rays don't care about weather"
       ],
       imageKey: "morning"
     },
@@ -267,6 +282,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Damp skin, upward strokes. Take 10 extra seconds to massage it into your hairline and jawline."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Don't mix it with your moisturiser — apply separately and let each product do its job."
         }
       ],
       night: [
@@ -292,7 +313,7 @@ const content = {
       tip: "Four days in! You might notice your skin feeling softer or looking a little more even — that's the Vitamin C Face Wash and Niacinamide Serum doing their work. These small changes are the beginning of bigger ones. Notice them, celebrate them.",
       avoid: [
         "Skipping moisturiser because your skin feels oily — oily skin needs moisture too",
-        "Applying products in the wrong order — cleanse, serum, moisturise always in that order",
+        "Applying products in the wrong order — cleanse, serum, moisturise, sunscreen always in that order",
         "Washing your face more than twice daily unless you've been sweating heavily",
         "Using a face towel that's been hanging in the bathroom for a week"
       ],
@@ -322,6 +343,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Upward strokes on damp skin. Add a tiny dot to the outer corners of your eyes today — the skin there is extra thin and delicate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun. This is the product that protects all the progress you're making."
         }
       ],
       night: [
@@ -377,6 +404,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Damp skin, upward strokes. If you're staying indoors most of the day, a lighter amount is fine."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Still applies on weekends! Even by a window indoors, UVA rays (the ageing ones) come through glass."
         }
       ],
       night: [
@@ -390,7 +423,7 @@ const content = {
           step: "tone",
           product: "Hydrating Toner",
           duration: "30 seconds",
-          instructions: "3–5 drops pressed directly into skin with fingertips — or use a cotton pad. Both work well. The warmth of your hands helps absorption."
+          instructions: "3–5 drops pressed directly into skin with fingertips — or use a cotton pad. Both work well."
         },
         {
           step: "moisturize",
@@ -432,6 +465,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Damp face, upward strokes. You've done this every day this week — it's already a habit."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Seven days of SPF. Your skin is already more protected from the darkening effects of sun exposure. Apply two-finger length and go out glowing."
         }
       ],
       night: [
@@ -485,13 +524,19 @@ const content = {
           step: "serum",
           product: "Vitamin C Serum",
           duration: "1 minute",
-          instructions: "UPGRADE! Switch from Niacinamide to Vitamin C Serum this morning. 2–3 drops pressed gently into clean skin. Vitamin C works in the morning to brighten dark spots and even out your tone. It may tingle slightly on first use — that's normal. 30 seconds to absorb."
+          instructions: "UPGRADE! Switch from Niacinamide to Vitamin C Serum this morning. 2–3 drops pressed gently into clean skin. Vitamin C works to brighten dark spots and even tone. It may tingle slightly on first use — that's normal. 30 seconds to absorb."
         },
         {
           step: "moisturize",
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Apply immediately after the serum absorbs. Upward strokes. Seal in everything."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Your Vitamin C + SPF combo is now working together — Vitamin C brightens, sunscreen protects. Powerful combination."
         }
       ],
       night: [
@@ -519,7 +564,7 @@ const content = {
         "Storing your Vitamin C Serum in sunlight or heat — it degrades and turns orange",
         "Using more than 3 drops — more is not better with active serums",
         "Applying Vitamin C to wet skin — it can amplify the tingle. Dry skin only",
-        "Skipping the serum because it tingles — a mild tingle means it's working"
+        "Skipping sunscreen when using Vitamin C — it makes your skin more sun-sensitive"
       ],
       imageKey: "products"
     },
@@ -546,7 +591,13 @@ const content = {
           step: "moisturize",
           product: "Moisturizer",
           duration: "1 minute",
-          instructions: "Immediately after toner. Upward strokes."
+          instructions: "Immediately after serum absorbs. Upward strokes."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -560,7 +611,7 @@ const content = {
           step: "tone",
           product: "Hydrating Toner",
           duration: "30 seconds",
-          instructions: "Use whichever method you prefer — cotton pad or palms. Stick with what feels right for your skin."
+          instructions: "Use whichever method you prefer — cotton pad or palms."
         },
         {
           step: "moisturize",
@@ -602,6 +653,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Seal in all that Vitamin C. Upward strokes on slightly damp skin."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -659,6 +716,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "After 30 seconds, seal in the serum. Upward strokes."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Always last in your morning routine. Use 15 minutes before going outside."
         }
       ],
       night: [
@@ -681,12 +744,12 @@ const content = {
           instructions: "Night moisturiser. Sleep well."
         }
       ],
-      tip: "The rule of product layering: thinnest to thickest. Water-based serum first, then the heavier moisturiser last. This ensures each product can penetrate where it needs to go and none of them block the others.",
+      tip: "The rule of product layering: thinnest to thickest. Water-based serum first, then moisturiser, then sunscreen last. This ensures each product can penetrate where it needs to go.",
       avoid: [
         "Applying moisturiser before serum — it blocks the serum from reaching your skin",
         "Mixing products in your palm before applying — apply each one separately",
         "Rushing between steps — give each product 30 seconds to absorb",
-        "Touching your face after applying serum before it has absorbed"
+        "Applying sunscreen before moisturiser — order matters"
       ],
       imageKey: "products"
     },
@@ -714,6 +777,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Apply quickly after the mist while skin is still damp. You might need a touch more product today — that's fine."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Protect all that hydration. Use 15 minutes before going outside."
         }
       ],
       night: [
@@ -769,6 +838,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Seal everything in."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -843,6 +918,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Upward strokes. Halfway through — your skin has had two weeks of daily care."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "14 days of sun protection. Your dark spots are fighting a losing battle. Apply two-finger length and keep going."
         }
       ],
       night: [
@@ -916,6 +997,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Seal in and prep for the day."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -983,7 +1070,13 @@ const content = {
           step: "moisturize",
           product: "Moisturizer",
           duration: "1 minute",
-          instructions: "Moisturise and protect."
+          instructions: "Moisturise."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1065,6 +1158,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1138,7 +1237,13 @@ const content = {
           step: "moisturize",
           product: "Moisturizer",
           duration: "1 minute",
-          instructions: "Hydrate and protect."
+          instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1213,6 +1318,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1290,6 +1401,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1357,7 +1474,13 @@ const content = {
           step: "moisturize",
           product: "Moisturizer",
           duration: "1 minute",
-          instructions: "Hydrate and protect."
+          instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1428,6 +1551,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1489,6 +1618,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate. Protect the glow."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1550,6 +1685,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1611,6 +1752,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Moisturise even oily or breakout-prone skin — skipping moisturiser makes skin produce more oil."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Especially important if you have dark spots from past breakouts — sun makes post-acne marks permanently darker."
         }
       ],
       night: [
@@ -1666,6 +1813,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Keep skin balanced."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Protect post-spot areas — sun makes marks permanent. Use 15 minutes before going outside."
         }
       ],
       night: [
@@ -1688,7 +1841,7 @@ const content = {
           instructions: "Lock in overnight repair."
         }
       ],
-      tip: "After a breakout, the dark mark it leaves (post-inflammatory hyperpigmentation) can feel discouraging. With Vitamin C applied consistently, that mark will fade significantly faster. Your routine is the treatment.",
+      tip: "After a breakout, the dark mark it leaves (post-inflammatory hyperpigmentation) can feel discouraging. With Vitamin C and SPF applied consistently, that mark will fade significantly faster. Your routine is the treatment.",
       avoid: [
         "Looking at the spot in a magnifying mirror 10 times a day — it creates anxiety and leads to picking",
         "Using harsh scrubs on healing skin",
@@ -1721,6 +1874,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Final sprint — this step never stops. Use 15 minutes before going outside."
         }
       ],
       night: [
@@ -1776,6 +1935,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun. This is non-negotiable for life."
         }
       ],
       night: [
@@ -1801,11 +1966,11 @@ const content = {
       tip: "Today, design YOUR routine. Which steps felt most important? What did your skin love? What can you realistically keep up on a busy morning? A routine you actually do is infinitely more powerful than a perfect routine you skip.",
       avoid: [
         "Designing a routine so complex you can't maintain it",
-        "Dropping your serum — it's the step driving the most change",
+        "Dropping SPF from your routine — this one is non-negotiable for life",
         "Creating a 'busy day' shortcut that skips cleansing",
         "Not writing it down — you'll forget the specifics"
       ],
-      specialNote: "BUILD YOUR ROUTINE: Write down your 3 non-negotiables (must-do every day), your 3 enhancement steps (when you have time), and one monthly treatment (turmeric mask, sheet mask, or ice therapy). This is YOUR skincare recipe for life.",
+      specialNote: "BUILD YOUR ROUTINE: Write down your 4 non-negotiables (cleanse, serum, moisturise, SPF — must-do every morning), your enhancement steps (when you have time), and one monthly treatment (turmeric mask, sheet mask, or ice therapy). This is YOUR skincare recipe for life.",
       imageKey: "products"
     },
 
@@ -1832,6 +1997,12 @@ const content = {
           product: "Moisturizer",
           duration: "1 minute",
           instructions: "Hydrate. Last full day of the programme — make it count."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Apply two-finger length amount. Use 15 minutes before going outside. Reapply every 4 hours if you're in the sun."
         }
       ],
       night: [
@@ -1886,7 +2057,13 @@ const content = {
           step: "moisturize",
           product: "Moisturizer",
           duration: "1 minute",
-          instructions: "Upward strokes. You know this by heart. Day 31, Day 100, Day 365 — this step never stops."
+          instructions: "Upward strokes. You know this by heart."
+        },
+        {
+          step: "sunscreen",
+          product: "SPF 50+ Sunscreen",
+          duration: "1 minute",
+          instructions: "Always. Forever. Day 31, Day 100, Day 365 — this step never ends. Two-finger length, face and neck. Go out glowing."
         }
       ],
       night: [
@@ -1912,7 +2089,7 @@ const content = {
       tip: "THIRTY DAYS. You did it. Look at your before and after photos. Look at what consistent, simple care does for your skin. Now the real test: Day 31. And Day 32. This routine is yours for life — not because a programme told you, but because you chose yourself every single morning and evening for 30 days straight. That habit is who you are now.",
       avoid: [
         "Stopping the routine because the programme is over — this was training, not a temporary fix",
-        "Going back to washing your face with whatever's in the bathroom — your cleanser matters",
+        "Abandoning SPF because you finished the guide — sun protection is for life",
         "Going back to harsh, stripping products",
         "Forgetting to take your after photos!"
       ],

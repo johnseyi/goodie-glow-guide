@@ -1199,12 +1199,22 @@ const Views = {
       moisturizer: {
         category: 'Moisturizer', color: '#A8896A', initial: 'MO',
         desc: 'A lightweight, non-greasy moisturizer that seals in your serum, strengthens your moisture barrier, and keeps skin soft and plump all day.',
-        howToUse: 'Morning: after serum, apply a small amount to face and neck in upward strokes. This is your final morning step. Evening: after toner, apply generously — night is when your skin repairs.',
-        waitTime: 'This is the final step — no waiting needed.',
+        howToUse: 'Morning: after serum, apply a small amount to face and neck in upward strokes, then follow with sunscreen. Evening: after toner, apply generously — night is when your skin repairs.',
+        waitTime: 'No waiting needed — apply sunscreen immediately after.',
         ingredients: ['Ceramides — rebuild and strengthen the skin barrier', 'Shea Butter — deeply nourishing, seals in moisture', 'Squalane — lightweight oil that mimics skin\'s natural sebum'],
         bestFor: 'All skin types. Essential for dry and dehydrated skin. Even oily skin needs moisturizer.',
-        pairs: 'Always the last step — morning and evening.',
+        pairs: 'Always before sunscreen in the morning routine.',
         tips: ['Apply while skin is still slightly damp from serum — seals in more moisture', 'A little goes a long way — pea-sized to 5p coin is enough', 'Don\'t skip because your skin feels oily — skipping causes MORE oil production']
+      },
+      sunscreen: {
+        category: 'SPF 50+', color: '#2E6DA4', initial: 'SP',
+        desc: 'A broad-spectrum SPF 50+ that protects against UVA (ageing, dark spots) and UVB (burning) rays. The final — and most critical — morning step.',
+        howToUse: 'MORNING ONLY. Apply two-finger length to face, neck, and any exposed skin as the very last step after moisturiser. Use 15 minutes before going outside. Reapply every 4 hours if you\'re in the sun.',
+        waitTime: 'No waiting — this is your final morning step. Then you\'re good to go!',
+        ingredients: ['Zinc Oxide / Titanium Dioxide — physical blockers that sit on skin and deflect UV', 'Niacinamide — brightens and reduces post-sun inflammation', 'Vitamin E — antioxidant that neutralises UV-generated free radicals'],
+        bestFor: 'Everyone. No exceptions. Every skin type, every day — cloudy or sunny.',
+        pairs: 'Always the last step in the morning — after moisturiser, never before.',
+        tips: ['Two-finger length is the magic amount — less and you lose protection', 'Apply 15 minutes before stepping outside', 'Reapply every 4 hours if you\'re outdoors — one morning application isn\'t enough all day', 'SPF on cloudy days is not optional — 80% of UV rays pass through clouds']
       }
     };
 
