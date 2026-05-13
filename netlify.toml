@@ -7,16 +7,16 @@
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
 
-# Long-lived cache for versioned static assets
+# Short cache for app files (no content hashes in filenames — must revalidate on deploy)
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/*.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 # SPA fallback — all paths serve index.html so hash routing works
 [[redirects]]
