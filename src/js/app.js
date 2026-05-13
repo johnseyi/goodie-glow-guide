@@ -152,6 +152,80 @@ const Progress = {
       }
       this.saveState();
     }
+  },
+
+  // Current consecutive streak (ending at the highest completed day)
+  calculateStreak() {
+    const days = [...this.getState().completedDays].sort((a, b) => a - b);
+    if (!days.length) return 0;
+    let streak = 1;
+    for (let i = days.length - 1; i > 0; i--) {
+      if (days[i] === days[i - 1] + 1) { streak++; } else { break; }
+    }
+    return streak;
+  },
+
+  // {done, total} for a given week number
+  getWeekProgress(weekNum) {
+    const week = content.weeks.find(w => w.week === weekNum);
+    if (!week) return { done: 0, total: 0 };
+    const done = week.days.filter(d => this.isDayComplete(d)).length;
+    return { done, total: week.days.length };
+  },
+
+  // Count saved progress photos
+  getPhotoCount() {
+    return [1, 10, 20, 30].filter(d => Storage.get('photo_day' + d)).length;
+  },
+
+  // Morning vs night completion rates across completed days
+  getRoutineConsistency() {
+    const state      = this.getState();
+    const completed  = state.completedDays;
+    if (!completed.length) return { morningRate: 0, nightRate: 0, morningDone: 0, nightDone: 0, total: 0 };
+    let morningDone = 0, nightDone = 0;
+    completed.forEach(dayNum => {
+      const checks  = state.routineChecks?.[dayNum] || { morning: [], night: [] };
+      const dayData = content.days.find(d => d.day === dayNum);
+      if (!dayData) return;
+      if ((checks.morning?.length ?? 0) >= dayData.morning.length) morningDone++;
+      if ((checks.night?.length   ?? 0) >= dayData.night.length)   nightDone++;
+    });
+    return {
+      morningRate: Math.round((morningDone / completed.length) * 100),
+      nightRate:   Math.round((nightDone   / completed.length) * 100),
+      morningDone, nightDone, total: completed.length
+    };
+  },
+
+  // Array of achievement objects with unlocked status
+  checkAchievements() {
+    const state      = this.getState();
+    const completed  = state.completedDays;
+    const streak     = this.calculateStreak();
+    const photoCount = this.getPhotoCount();
+    return [
+      { id: 'first-step',   name: 'First Step',       icon: 'play-circle', desc: 'Complete Day 1',                 unlocked: completed.includes(1) },
+      { id: 'week-warrior', name: 'Week Warrior',      icon: 'award',       desc: 'Finish all 7 days of Week 1',    unlocked: [1,2,3,4,5,6,7].every(d => completed.includes(d)) },
+      { id: 'consistency',  name: 'Consistency Queen', icon: 'flame',       desc: 'Achieve a 7-day streak',         unlocked: streak >= 7 },
+      { id: 'halfway',      name: 'Halfway Hero',      icon: 'star',        desc: 'Complete 15 days',               unlocked: completed.length >= 15 },
+      { id: 'photo-pro',    name: 'Photo Pro',         icon: 'camera',      desc: 'Upload all 4 progress photos',   unlocked: photoCount >= 4 },
+      { id: 'glow-master',  name: 'Glow Master',       icon: 'sparkles',    desc: 'Complete all 30 days',           unlocked: completed.length >= 30 }
+    ];
+  },
+
+  // Contextual motivational message
+  getMotivationalMessage() {
+    const n = this.getCompletedCount();
+    if (n === 0)       return "Welcome! Your 30-day glow journey starts now. Day 1 is ready for you.";
+    if (n < 7)         return `${n} day${n > 1 ? 's' : ''} in — you're building something real. Keep going!`;
+    if (n === 7)       return "One full week! Your skin is already learning to love the care you're giving it. 💖";
+    if (n < 14)        return "Week 2 is your breakthrough zone. The habit is forming — feel the momentum!";
+    if (n === 14)      return "Two weeks done! You're exactly halfway. Your skin is visibly changing.";
+    if (n < 21)        return "More than halfway! The glow is real now — people around you will start to notice. ✨";
+    if (n === 21)      return "21 days — science says the habit is yours for life. The last stretch starts now! 💪🏾";
+    if (n < 30)        return `Just ${30 - n} day${30 - n > 1 ? 's' : ''} left. Finish as strong as you started!`;
+    return "30 DAYS COMPLETE! You did it. Look at your before and after — the glow is REAL. 🎊";
   }
 };
 
@@ -706,77 +780,318 @@ const Views = {
     `);
   },
 
-  // ── PROGRESS PAGE ──────────────────────────
+  // ── PROGRESS DASHBOARD ────────────────────────
   renderProgress() {
-    const completed  = Progress.getCompletedCount();
-    const pct        = Progress.getCompletionPercentage();
-    const currentDay = Progress.getCurrentDay();
+    const completed   = Progress.getCompletedCount();
+    const pct         = Progress.getCompletionPercentage();
+    const currentDay  = Progress.getCurrentDay();
+    const streak      = Progress.calculateStreak();
+    const photoCount  = Progress.getPhotoCount();
+    const achievements = Progress.checkAchievements();
+    const consistency = Progress.getRoutineConsistency();
+    const message     = Progress.getMotivationalMessage();
+    const startDate   = Progress.getState().startDate;
 
-    const dayGrid = content.days.map(day => {
-      const done    = Progress.isDayComplete(day.day);
-      const current = day.day === currentDay;
-      const locked  = Progress.isDayLocked(day.day);
+    // ── Ring maths (r=82, circumference≈515) ──
+    const CIRC  = 515.22;
+    const offset = CIRC - (CIRC * pct / 100);
 
-      const cls = done ? 'is-complete' : current ? 'is-current' : locked ? 'is-locked' : '';
-      const icon = done ? 'check-circle' : current ? 'star' : 'circle';
-
+    // ── Week progress bars ─────────────────────
+    const weekBarColors = ['var(--color-primary)', 'var(--color-secondary)', 'var(--color-accent)', 'var(--color-primary-light)'];
+    const weekBars = content.weeks.map((w, i) => {
+      const wp  = Progress.getWeekProgress(w.week);
+      const wpct = wp.total ? Math.round((wp.done / wp.total) * 100) : 0;
       return `
-        <a href="#/day/${day.day}" class="card card--day card--interactive ${cls}" aria-label="Day ${day.day}: ${day.title}${done ? ' — complete' : current ? ' — current day' : locked ? ' — locked' : ''}">
-          <div class="cluster justify-between mb-2">
-            <span class="badge ${done ? 'badge--success' : current ? 'badge--accent' : 'badge--muted'}">Day ${day.day}</span>
-            <svg data-lucide="${icon}" class="icon-md ${done ? 'icon-success' : current ? 'icon-accent' : 'icon-muted'}" aria-hidden="true"></svg>
+        <div class="week-bar animate-slide-up" style="animation-delay:${i * 80}ms">
+          <div class="week-bar__top">
+            <span class="week-bar__label">
+              <span class="week-bar__dot" style="background:${weekBarColors[i]}"></span>
+              Week ${w.week} — ${w.title}
+            </span>
+            <span class="week-bar__meta">${wp.done}/${wp.total} days · ${wpct}%</span>
           </div>
-          <p style="font-size:var(--text-sm);font-weight:600;margin:0;color:var(--color-text-primary)">${day.title}</p>
-          <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin:var(--space-1) 0 0">Week ${day.week} · ${day.phase}</p>
-        </a>`;
+          <div class="week-bar__track" role="progressbar" aria-valuenow="${wp.done}" aria-valuemax="${wp.total}">
+            <div class="week-bar__fill" style="width:${wpct}%;background:${weekBarColors[i]}"></div>
+          </div>
+        </div>`;
     }).join('');
 
-    this._render(`
-      <section class="section" aria-labelledby="progress-heading">
+    // ── 30-day calendar ────────────────────────
+    const calWeeks = content.weeks.map(w => {
+      const tiles = w.days.map(dayNum => {
+        const day     = content.days.find(d => d.day === dayNum);
+        const done    = Progress.isDayComplete(dayNum);
+        const current = dayNum === currentDay;
+        const locked  = Progress.isDayLocked(dayNum);
+        const hasPhoto = [1,10,20,30].includes(dayNum) && Storage.get('photo_day' + dayNum);
+
+        const cls   = done ? 'cal-tile--done' : current ? 'cal-tile--current' : locked ? 'cal-tile--locked' : 'cal-tile--available';
+        const icon  = done ? 'check' : current ? 'star' : locked ? 'lock' : 'circle';
+        const label = `Day ${dayNum}: ${day ? day.title : ''}${done ? ' — done' : current ? ' — today' : locked ? ' — locked' : ''}`;
+        const tag   = done || current ? 'a' : 'div';
+        const href  = (done || current) ? ` href="#/day/${dayNum}"` : '';
+
+        return `
+          <${tag}${href} class="cal-tile ${cls}" title="${label}" aria-label="${label}">
+            <span class="cal-tile__num">${dayNum}</span>
+            <svg data-lucide="${icon}" class="cal-tile__icon" aria-hidden="true"></svg>
+            ${hasPhoto ? '<span class="cal-tile__photo" aria-label="photo uploaded">📷</span>' : ''}
+          </${tag}>`;
+      }).join('');
+
+      return `
+        <div class="cal-week-group">
+          <p class="cal-week-label">
+            <span class="cal-week-label__dot" style="background:${weekBarColors[w.week - 1]}"></span>
+            Week ${w.week} — ${w.phase}
+          </p>
+          <div class="cal-row">${tiles}</div>
+        </div>`;
+    }).join('');
+
+    // ── Photo journey ──────────────────────────
+    const photoSlots = [
+      { day: 1,  label: 'Before',   sublabel: 'Day 1' },
+      { day: 10, label: 'Week 2',   sublabel: 'Day 10' },
+      { day: 20, label: 'Week 3',   sublabel: 'Day 20' },
+      { day: 30, label: 'After',    sublabel: 'Day 30' }
+    ].map(slot => {
+      const photo   = Storage.get('photo_day' + slot.day);
+      const canAdd  = !Progress.isDayLocked(slot.day);
+      return `
+        <div class="photo-slot${photo ? '' : ' photo-slot--empty'}">
+          <p class="photo-slot__label">${slot.label}</p>
+          <p class="photo-slot__sublabel">${slot.sublabel}</p>
+          ${photo
+            ? `<a href="#/day/${slot.day}" class="photo-slot__link">
+                 <img src="${photo}" alt="Day ${slot.day} progress photo" class="photo-slot__img">
+               </a>`
+            : `<a href="#/day/${slot.day}" class="photo-slot__add" aria-label="Add Day ${slot.day} photo"${!canAdd ? ' tabindex="-1" aria-disabled="true"' : ''}>
+                 <svg data-lucide="${canAdd ? 'camera' : 'lock'}" aria-hidden="true"></svg>
+                 <span>${canAdd ? 'Add photo' : 'Locked'}</span>
+               </a>`}
+        </div>`;
+    }).join('');
+
+    const hasAnyPhoto = photoCount > 0;
+
+    // ── Achievements ───────────────────────────
+    const achievementCards = achievements.map((a, i) => `
+      <div class="achievement-card${a.unlocked ? '' : ' achievement-card--locked'} animate-slide-up" style="animation-delay:${i * 60}ms">
+        <div class="achievement-card__icon">
+          <svg data-lucide="${a.icon}" aria-hidden="true"></svg>
+        </div>
+        <p class="achievement-card__name">${a.name}</p>
+        <p class="achievement-card__desc">${a.desc}</p>
+        ${a.unlocked ? '<span class="achievement-card__tick" aria-label="Unlocked">✓</span>' : '<svg data-lucide="lock" class="achievement-card__lock" aria-hidden="true"></svg>'}
+      </div>`).join('');
+
+    // ── Consistency ────────────────────────────
+    const consistencySection = completed > 0 ? `
+      <div class="section" style="padding:var(--space-12) 0">
         <div class="container">
-          <div class="text-center mb-8">
-            <span class="label">Your Journey</span>
-            <h1 id="progress-heading" class="mt-2">My Progress</h1>
-          </div>
-
-          <!-- Overall progress -->
-          <div class="card card--highlight mb-8 animate-scale-in">
-            <div class="cluster justify-between mb-4" style="flex-wrap:wrap;gap:var(--space-4)">
-              <div>
-                <p class="label">Overall Progress</p>
-                <p style="font-size:var(--text-3xl);font-weight:700;color:var(--color-primary);line-height:1;margin:var(--space-2) 0">${completed}<span style="font-size:var(--text-lg);color:var(--color-text-muted)">/30 days</span></p>
+          <h2 class="mb-6" style="font-size:var(--text-xl)">Routine Consistency</h2>
+          <div class="grid--2" style="gap:var(--space-4)">
+            <div class="card">
+              <div class="cluster mb-3">
+                <svg data-lucide="sun" style="color:var(--color-accent);width:20px;height:20px" aria-hidden="true"></svg>
+                <strong>Morning Routine</strong>
+                <span class="badge badge--accent" style="margin-left:auto">${consistency.morningRate}%</span>
               </div>
-              <div style="text-align:right">
-                <p class="label">Current Day</p>
-                <p style="font-size:var(--text-3xl);font-weight:700;color:var(--color-accent);line-height:1;margin:var(--space-2) 0">${currentDay}</p>
-              </div>
+              <div class="progress"><div class="progress__fill" style="width:${consistency.morningRate}%"></div></div>
+              <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2)">
+                ${consistency.morningDone} of ${consistency.total} days fully completed
+              </p>
             </div>
-            <div class="progress-labelled">
-              <div class="progress-labelled__label">
-                <span>${pct}% complete</span>
-                <span>${30 - completed} days remaining</span>
+            <div class="card">
+              <div class="cluster mb-3">
+                <svg data-lucide="moon" style="color:var(--color-primary);width:20px;height:20px" aria-hidden="true"></svg>
+                <strong>Night Routine</strong>
+                <span class="badge badge--week" style="margin-left:auto">${consistency.nightRate}%</span>
               </div>
-              <div class="progress" role="progressbar" aria-valuenow="${completed}" aria-valuemin="0" aria-valuemax="30" aria-label="${completed} of 30 days complete">
-                <div class="progress__fill progress--lg" style="width:${pct}%"></div>
-              </div>
-            </div>
-
-            <div class="cluster mt-6" style="justify-content:flex-start;flex-wrap:wrap;gap:var(--space-2)">
-              <a href="#/day/${currentDay}" class="btn btn--primary">
-                <svg data-lucide="sun" aria-hidden="true"></svg>
-                Go to Day ${currentDay}
-              </a>
-              ${completed === 30 ? `<a href="#/day/1" class="btn btn--ghost">View Day 1 Again</a>` : ''}
+              <div class="progress"><div class="progress__fill" style="width:${consistency.nightRate}%"></div></div>
+              <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2)">
+                ${consistency.nightDone} of ${consistency.total} days fully completed
+              </p>
             </div>
           </div>
+          ${consistency.nightRate < consistency.morningRate - 10
+            ? `<p class="tip-box" style="margin-top:var(--space-4)">
+                 <span class="tip-box__label"><svg data-lucide="sparkles" aria-hidden="true"></svg> Tip</span>
+                 Your night routine needs a little love! Try setting a 9 PM reminder — night routines are where the real repair happens. 🌙
+               </p>` : ''}
+        </div>
+      </div>` : '';
 
-          <!-- Day grid -->
-          <h2 class="mb-4" style="font-size:var(--text-xl)">All 30 Days</h2>
-          <div class="grid--days stagger" role="list" aria-label="All 30 days">
-            ${dayGrid}
+    // ── Start date display ─────────────────────
+    const startedOn = startDate
+      ? new Date(startDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+      : null;
+    const expectedDone = startDate
+      ? new Date(new Date(startDate).getTime() + 30 * 24 * 60 * 60 * 1000)
+          .toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+      : null;
+
+    this._render(`
+      <!-- ── PAGE HEADER ── -->
+      <div class="progress-page-header">
+        <div class="container">
+          <span class="label" style="color:rgba(255,255,255,0.6)">Your Journey</span>
+          <h1 id="progress-heading" style="color:white;margin-bottom:var(--space-2)">My Progress</h1>
+          <p class="motivational-message">${message}</p>
+        </div>
+      </div>
+
+      <!-- ── HERO: RING + STATS ── -->
+      <div class="progress-hero">
+        <div class="container">
+          <div class="progress-hero__layout">
+
+            <!-- Large progress ring -->
+            <div class="progress-hero__ring-wrap">
+              <svg viewBox="0 0 200 200" width="200" height="200"
+                   class="pring-lg" aria-label="${pct}% of 30 days complete">
+                <defs>
+                  <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#8B6F47"/>
+                    <stop offset="100%" stop-color="#D4AF37"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="82" fill="none"
+                        stroke="var(--color-bg-muted)" stroke-width="12"/>
+                <circle cx="100" cy="100" r="82" fill="none"
+                        stroke="url(#ring-grad)" stroke-width="12"
+                        stroke-linecap="round"
+                        stroke-dasharray="${CIRC}"
+                        stroke-dashoffset="${CIRC}"
+                        transform="rotate(-90 100 100)"
+                        class="pring-lg__fill"
+                        data-target="${offset}"/>
+                <text x="100" y="86"  text-anchor="middle" class="pring-lg__pct"  dominant-baseline="middle">${pct}%</text>
+                <text x="100" y="112" text-anchor="middle" class="pring-lg__days" dominant-baseline="middle">${completed}/30</text>
+                <text x="100" y="130" text-anchor="middle" class="pring-lg__sub"  dominant-baseline="middle">days</text>
+              </svg>
+              ${streak > 1 ? `
+              <div class="streak-badge">
+                <svg data-lucide="flame" aria-hidden="true"></svg>
+                ${streak}-day streak!
+              </div>` : ''}
+            </div>
+
+            <!-- Stat cards -->
+            <div class="stats-grid">
+              <div class="stat-card animate-slide-up">
+                <div class="stat-card__icon" style="background:rgba(74,124,89,0.1)">
+                  <svg data-lucide="check-circle" style="color:var(--color-success)" aria-hidden="true"></svg>
+                </div>
+                <div>
+                  <p class="stat-card__value" data-count-to="${completed}">${completed}</p>
+                  <p class="stat-card__label">Days Complete</p>
+                </div>
+              </div>
+              <div class="stat-card animate-slide-up" style="animation-delay:80ms">
+                <div class="stat-card__icon" style="background:rgba(212,175,55,0.12)">
+                  <svg data-lucide="flame" style="color:var(--color-accent-dark)" aria-hidden="true"></svg>
+                </div>
+                <div>
+                  <p class="stat-card__value" data-count-to="${streak}">${streak}</p>
+                  <p class="stat-card__label">Day Streak</p>
+                </div>
+              </div>
+              <div class="stat-card animate-slide-up" style="animation-delay:160ms">
+                <div class="stat-card__icon" style="background:rgba(139,111,71,0.08)">
+                  <svg data-lucide="camera" style="color:var(--color-primary)" aria-hidden="true"></svg>
+                </div>
+                <div>
+                  <p class="stat-card__value" data-count-to="${photoCount}">${photoCount}</p>
+                  <p class="stat-card__label">Photos Taken</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Quick actions -->
+          <div class="cluster mt-6" style="flex-wrap:wrap;gap:var(--space-3)">
+            <a href="#/day/${currentDay}" class="btn btn--primary">
+              <svg data-lucide="sun" aria-hidden="true"></svg>
+              Continue — Day ${currentDay}
+            </a>
+            <a href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I've%20completed%20${completed}%20days%20of%20the%20Glow%20Guide!"
+               class="btn btn--whatsapp" target="_blank" rel="noopener noreferrer">
+              <svg data-lucide="message-circle" aria-hidden="true"></svg>
+              Share with Goodie
+            </a>
+            <button class="btn btn--secondary" onclick="window.print()" type="button">
+              <svg data-lucide="download" aria-hidden="true"></svg>
+              Export Report
+            </button>
+          </div>
+
+          ${startedOn ? `
+          <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-4)">
+            Started ${startedOn} · Expected completion ${expectedDone}
+          </p>` : ''}
+        </div>
+      </div>
+
+      <!-- ── WEEK PROGRESS ── -->
+      <div class="section" style="background:var(--color-bg-muted);padding:var(--space-12) 0">
+        <div class="container">
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-6)">Weekly Progress</h2>
+          <div class="week-bars">${weekBars}</div>
+        </div>
+      </div>
+
+      <!-- ── 30-DAY CALENDAR ── -->
+      <div class="section" style="padding:var(--space-12) 0">
+        <div class="container">
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-2)">Your 30-Day Journey</h2>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6)">
+            Tap any completed day to revisit its routine
+          </p>
+          <div class="cal-calendar" aria-label="30-day progress calendar">
+            ${calWeeks}
           </div>
         </div>
-      </section>
+      </div>
+
+      <!-- ── PHOTO JOURNEY ── -->
+      <div class="section" style="background:var(--color-bg-muted);padding:var(--space-12) 0">
+        <div class="container">
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-2)">Photo Journey</h2>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6)">
+            ${hasAnyPhoto ? 'Your transformation documented at key milestones.' : 'Upload your before photo on Day 1 to track your amazing transformation!'}
+          </p>
+          <div class="photo-journey">${photoSlots}</div>
+        </div>
+      </div>
+
+      <!-- ── CONSISTENCY ── -->
+      ${consistencySection}
+
+      <!-- ── ACHIEVEMENTS ── -->
+      <div class="section" style="padding:var(--space-12) 0">
+        <div class="container">
+          <h2 style="font-size:var(--text-xl);margin-bottom:var(--space-2)">Achievements</h2>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6)">
+            ${achievements.filter(a => a.unlocked).length} of ${achievements.length} unlocked
+          </p>
+          <div class="achievement-grid">${achievementCards}</div>
+        </div>
+      </div>
+
+      <!-- ── EMPTY STATE (no days) ── -->
+      ${completed === 0 ? `
+      <div class="container" style="text-align:center;padding-bottom:var(--space-12)">
+        <p style="color:var(--color-text-muted);font-size:var(--text-sm)">
+          Your stats will fill in as you complete your daily routines.
+        </p>
+        <a href="#/day/1" class="btn btn--primary mt-4">
+          <svg data-lucide="play-circle" aria-hidden="true"></svg>
+          Start Day 1 Now
+        </a>
+      </div>` : ''}
     `);
   },
 
@@ -968,6 +1283,32 @@ const GoodieApp = {
 
   // ── Bind events in rendered views ───────────
   _bindViewEvents() {
+    // Animate large progress ring (progress page)
+    var lgRing = document.querySelector('.pring-lg__fill');
+    if (lgRing) {
+      var target = parseFloat(lgRing.getAttribute('data-target'));
+      // Two rAF frames so the initial dashoffset (empty) has been painted
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          lgRing.style.transition = 'stroke-dashoffset 1400ms cubic-bezier(0.34, 1.56, 0.64, 1)';
+          lgRing.style.strokeDashoffset = target;
+        });
+      });
+    }
+
+    // Count-up animation for stat values
+    document.querySelectorAll('[data-count-to]').forEach(function(el) {
+      var tgt = parseInt(el.getAttribute('data-count-to'), 10);
+      if (!tgt) return;
+      var dur = 900, t0 = performance.now();
+      (function tick(now) {
+        var p = Math.min((now - t0) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(e * tgt);
+        if (p < 1) requestAnimationFrame(tick);
+      }(t0));
+    });
+
     // Routine checkboxes
     document.querySelectorAll('.routine-checklist__input').forEach(input => {
       input.addEventListener('change', (e) => {
