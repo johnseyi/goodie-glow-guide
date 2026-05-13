@@ -903,29 +903,19 @@ function _cap(str) {
 // ─────────────────────────────────────────────
 // BOOT
 // ─────────────────────────────────────────────
-// All three scripts load with `defer`, which means they execute in document
-// order AFTER the DOM is parsed but BEFORE DOMContentLoaded fires.
-// However, by the time the last defer script (this file) runs, the DOM is
-// fully built and DOMContentLoaded has NOT yet fired — so we can safely
-// listen for it. As a belt-and-braces fallback, we also handle the case
-// where readyState is already 'complete' (e.g. reopening a cached page).
-function _boot() {
+// This script sits at the bottom of <body> with no defer/async, so by the
+// time the browser executes it the entire DOM is already built. No
+// DOMContentLoaded listener is needed — just run immediately.
+(function boot() {
   if (!content) {
-    console.error('[Goodie] content.js did not load — check the script tag order in index.html.');
-    document.getElementById('main').innerHTML = `
-      <div class="empty-state section">
-        <h3>Something went wrong</h3>
-        <p>Could not load the programme content. Please refresh the page.</p>
-      </div>`;
+    // content.js failed or loaded out of order
+    var el = document.getElementById('main');
+    if (el) el.innerHTML = '<div class="empty-state section"><h3>Could not load content</h3><p>Please refresh the page. If the problem persists, try opening the file from a local server.</p></div>';
+    console.error('[Goodie] window.GoodieContent is not set. Make sure content.js loads before app.js.');
     return;
   }
   GoodieApp.init();
+  // Lucide loads async — call createIcons now if already available,
+  // otherwise the onload handler on the <script> tag handles it.
   if (window.lucide) window.lucide.createIcons();
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', _boot);
-} else {
-  // DOM is already ready (e.g. script injected dynamically or page cached)
-  _boot();
-}
+}());

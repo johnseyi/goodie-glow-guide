@@ -149,16 +149,26 @@
   </footer>
 
   <!-- ═══════════════════════════════════════════
-       SCRIPTS — all deferred
+       SCRIPTS
   ═══════════════════════════════════════════ -->
-  <!-- Load order matters:
-       1. content.js   — sets window.GoodieContent (data)
-       2. lucide.js    — sets window.lucide (icons)
-       3. app.js       — reads both globals, boots the app
-       All three are deferred so they never block rendering. -->
-  <script src="data/content.js" defer></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
-  <script src="js/app.js" defer></script>
+  <!--
+    Load order:
+      1. content.js  — plain <script> at bottom of body. Runs immediately
+                       once the parser reaches it; DOM is already built.
+                       Sets window.GoodieContent.
+      2. app.js      — same approach. Reads window.GoodieContent and boots
+                       the app synchronously. No DOMContentLoaded needed.
+      3. lucide.js   — async: loads in the background without blocking
+                       anything. When it arrives, onload calls createIcons()
+                       to fill any SVG placeholders already in the DOM.
+  -->
+  <script src="data/content.js"></script>
+  <script src="js/app.js"></script>
+  <script
+    src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"
+    async
+    onload="window.lucide && window.lucide.createIcons()"
+  ></script>
 
 </body>
 </html>
