@@ -151,11 +151,14 @@
   <!-- ═══════════════════════════════════════════
        SCRIPTS — all deferred
   ═══════════════════════════════════════════ -->
-  <!-- Lucide icons — non-module, loaded before app so window.lucide is available -->
+  <!-- Load order matters:
+       1. content.js   — sets window.GoodieContent (data)
+       2. lucide.js    — sets window.lucide (icons)
+       3. app.js       — reads both globals, boots the app
+       All three are deferred so they never block rendering. -->
+  <script src="data/content.js" defer></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
-
-  <!-- Main app — ES module, always deferred by the browser -->
-  <script src="js/app.js" type="module"></script>
+  <script src="js/app.js" defer></script>
 
 </body>
 </html>

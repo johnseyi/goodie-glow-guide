@@ -2306,4 +2306,6 @@ const content = {
 
 }; // end content
 
-export default content;
+// Expose as global so the app can access it without ES module imports.
+// This lets the app work when opened directly via file:// in the browser.
+window.GoodieContent = content;

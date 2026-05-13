@@ -1,10 +1,14 @@
 /**
  * Goodie Glow Guide — Main Application
  * Initialises routing, navigation, and page rendering.
- * Depends on: storage.js, progress.js (loaded before this via <script defer>)
+ *
+ * No ES module imports — content.js is loaded as a plain script before
+ * this file and exposes window.GoodieContent. This lets the app work
+ * when opened directly via file:// without a local dev server.
  */
 
-import content from '../data/content.js';
+// content is set by content.js (loaded before this script in index.html)
+const content = window.GoodieContent;
 
 // ─────────────────────────────────────────────
 // STORAGE MODULE
@@ -899,8 +903,29 @@ function _cap(str) {
 // ─────────────────────────────────────────────
 // BOOT
 // ─────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+// All three scripts load with `defer`, which means they execute in document
+// order AFTER the DOM is parsed but BEFORE DOMContentLoaded fires.
+// However, by the time the last defer script (this file) runs, the DOM is
+// fully built and DOMContentLoaded has NOT yet fired — so we can safely
+// listen for it. As a belt-and-braces fallback, we also handle the case
+// where readyState is already 'complete' (e.g. reopening a cached page).
+function _boot() {
+  if (!content) {
+    console.error('[Goodie] content.js did not load — check the script tag order in index.html.');
+    document.getElementById('main').innerHTML = `
+      <div class="empty-state section">
+        <h3>Something went wrong</h3>
+        <p>Could not load the programme content. Please refresh the page.</p>
+      </div>`;
+    return;
+  }
   GoodieApp.init();
-  // Initialise Lucide icons (also called after each view render)
   if (window.lucide) window.lucide.createIcons();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _boot);
+} else {
+  // DOM is already ready (e.g. script injected dynamically or page cached)
+  _boot();
+}
