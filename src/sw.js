@@ -1,5 +1,5 @@
-/* Goodie Glow Guide — Service Worker v3 */
-const CACHE = 'goodie-glow-v3';
+/* Goodie Glow Guide — Service Worker v4 */
+const CACHE = 'goodie-glow-v4';
 const ASSETS = [
   '/',
   '/index.html',
