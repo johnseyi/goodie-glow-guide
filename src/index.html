@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Goodie Glow Guide — Your interactive 30-day skincare journey. Built for Nigerian and Ugandan skin. Start glowing today.">
+  <meta name="theme-color" content="#8B6F47">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Goodie Glow Guide — 30-Day Skincare Journey">
+  <meta property="og:description" content="Your interactive 30-day skincare programme, designed for Nigerian and Ugandan skin.">
+  <meta property="og:type" content="website">
+
+  <title>Goodie Glow Guide — 30-Day Skincare Journey</title>
+
+  <!-- Fonts: preconnect first, then load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Skip to main content — first focusable element on every page -->
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER / NAV
+  ═══════════════════════════════════════════ -->
+  <header class="nav" role="banner">
+    <a href="#/" class="nav__logo" aria-label="Goodie Glow Guide — home">
+      Goodie <span class="nav__logo-accent">Glow</span>
+    </a>
+
+    <!-- Desktop navigation links (hidden on mobile, shown via CSS at 1024px+) -->
+    <nav aria-label="Main navigation" id="nav-drawer" class="nav__drawer">
+      <a href="#/" class="nav__link" data-nav-link="home">Home</a>
+      <a href="#/progress" class="nav__link" data-nav-link="progress">My Progress</a>
+      <a href="#/products" class="nav__link" data-nav-link="products">Products</a>
+      <a href="#/help" class="nav__link" data-nav-link="help">Help</a>
+      <a href="#/day/1" class="btn btn--primary btn--sm nav__cta" data-nav-link="day">
+        Today's Routine
+      </a>
+    </nav>
+
+    <!-- Mobile hamburger button (hidden at 1024px+) -->
+    <button
+      class="nav__toggle"
+      aria-expanded="false"
+      aria-controls="nav-drawer"
+      aria-label="Open menu"
+      data-nav-toggle
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Mobile nav backdrop — closes drawer on tap -->
+  <div class="nav__backdrop" aria-hidden="true" data-nav-backdrop></div>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT — router renders here
+  ═══════════════════════════════════════════ -->
+  <main id="main" class="app-main" role="main" aria-live="polite" aria-atomic="false">
+    <!-- Content injected by Router/Views -->
+    <div class="loading-state" aria-label="Loading">
+      <div class="loading-state__spinner" aria-hidden="true"></div>
+      <p>Loading your glow guide…</p>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       BOTTOM NAV — mobile only
+  ═══════════════════════════════════════════ -->
+  <nav class="bottom-nav" aria-label="Quick navigation" id="bottom-nav">
+    <a href="#/" class="bottom-nav__item" data-bottom-link="home" aria-label="Home">
+      <svg data-lucide="home" aria-hidden="true"></svg>
+      <span>Home</span>
+    </a>
+    <a href="#/day/1" class="bottom-nav__item" data-bottom-link="day" aria-label="Today's routine">
+      <svg data-lucide="sun" aria-hidden="true"></svg>
+      <span>Today</span>
+    </a>
+    <a href="#/progress" class="bottom-nav__item" data-bottom-link="progress" aria-label="My progress">
+      <svg data-lucide="bar-chart-2" aria-hidden="true"></svg>
+      <span>Progress</span>
+    </a>
+    <a href="#/help" class="bottom-nav__item" data-bottom-link="help" aria-label="Help">
+      <svg data-lucide="life-buoy" aria-hidden="true"></svg>
+      <span>Help</span>
+    </a>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+
+        <div class="footer__brand">
+          <p class="footer__logo">Goodie <span class="footer__logo-accent">Glow</span></p>
+          <p class="footer__tagline">Your 30-day journey to glowing skin, built for Nigerian and Ugandan beauty.</p>
+        </div>
+
+        <div class="footer__contact">
+          <p class="footer__heading">Get in Touch</p>
+          <a
+            href="https://wa.me/2348063214942?text=Hi%20Goodie!%20I%20have%20a%20question%20about%20the%20Glow%20Guide."
+            class="footer__whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat with Goodie on WhatsApp"
+          >
+            <svg data-lucide="message-circle" aria-hidden="true"></svg>
+            WhatsApp: 08063214942
+          </a>
+          <a
+            href="https://instagram.com/its.goodie"
+            class="footer__instagram"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow Goodie on Instagram"
+          >
+            <svg data-lucide="instagram" aria-hidden="true"></svg>
+            @its.goodie
+          </a>
+        </div>
+
+        <div class="footer__links">
+          <p class="footer__heading">Quick Links</p>
+          <ul class="footer__nav" role="list">
+            <li><a href="#/products">Product Guide</a></li>
+            <li><a href="#/progress">My Progress</a></li>
+            <li><a href="#/help">Troubleshooting</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <p>&copy; <span id="footer-year"></span> Goodie Beauty &amp; Skincare. With love for glowing skin.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       SCRIPTS — all deferred
+  ═══════════════════════════════════════════ -->
+  <!-- Lucide icons — non-module, loaded before app so window.lucide is available -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+  <!-- Main app — ES module, always deferred by the browser -->
+  <script src="js/app.js" type="module"></script>
+
+</body>
+</html>
