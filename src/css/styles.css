@@ -3025,30 +3025,27 @@ p:last-child { margin-bottom: 0; }
    27. ILLUSTRATION SYSTEM
 ───────────────────────────────────────────── */
 
-/* Step list item — icon beside content */
+/* Step list item — icon + body side by side */
 .routine-checklist__item {
   display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
+  align-items: center;
+  gap: var(--space-2);
 }
 
+/* Step icon — mobile-first: 36 × 36 px */
 .step-visual {
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  background: var(--color-bg-overlay, rgba(139,111,71,.08));
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 36px;
+  height: 36px;
   overflow: hidden;
+  /* SVG handles its own rounded bg; no extra bg needed */
 }
 
 .step-visual svg {
   width: 100%;
   height: 100%;
   display: block;
-  animation: illu-fade-in 0.4s ease both;
+  animation: illu-fade-in 0.35s ease both;
 }
 
 .step-body {
@@ -3056,9 +3053,15 @@ p:last-child { margin-bottom: 0; }
   min-width: 0;
 }
 
-/* Week card illustration */
+/* Tablet+ — slightly larger icon */
+@media (min-width: 480px) {
+  .step-visual { width: 40px; height: 40px; }
+}
+
+/* Week card illustration — fixed-height banner, clips excess */
 .week-card__illustration {
   width: 100%;
+  height: 52px;
   overflow: hidden;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   margin-bottom: var(--space-3);
@@ -3067,8 +3070,14 @@ p:last-child { margin-bottom: 0; }
 
 .week-card__illustration svg {
   width: 100%;
-  height: auto;
+  height: auto;        /* keeps aspect ratio; container clips it */
   display: block;
+  min-height: 52px;
+}
+
+@media (min-width: 640px) {
+  .week-card__illustration { height: 64px; }
+  .week-card__illustration svg { min-height: 64px; }
 }
 
 /* Loading sparkle animation */
@@ -3077,9 +3086,7 @@ p:last-child { margin-bottom: 0; }
   margin: 0 auto;
 }
 
-.spark {
-  animation: spark-twinkle 1.5s ease infinite;
-}
+.spark { animation: spark-twinkle 1.5s ease infinite; }
 .spark--1 { animation-delay: 0s; }
 .spark--2 { animation-delay: 0.5s; }
 .spark--3 { animation-delay: 1s; }
@@ -3090,6 +3097,6 @@ p:last-child { margin-bottom: 0; }
 }
 
 @keyframes illu-fade-in {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }
 }
