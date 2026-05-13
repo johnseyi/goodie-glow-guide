@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(node --input-type=module)",
+      "Bash(node -e ' *)",
+      "Bash(node --check src/data/content.js)",
+      "Bash(node --check src/js/app.js)",
+      "Bash(node --check \"C:\\\\Users\\\\user\\\\Desktop\\\\Projects\\\\goodie-glow-guide\\\\src\\\\js\\\\app.js\")",
+      "Bash(Get-Content \"C:\\\\Users\\\\user\\\\Desktop\\\\Projects\\\\goodie-glow-guide\\\\src\\\\css\\\\styles.css\")",
+      "Bash(Measure-Object -Line)",
+      "Bash(node --check \"C:/Users/user/Desktop/Projects/goodie-glow-guide/src/js/app.js\")",
+      "Bash(node --check \"C:/Users/user/Desktop/Projects/goodie-glow-guide/src/js/illustrations.js\")",
+      "Bash(node --check \"C:/Users/user/Desktop/Projects/goodie-glow-guide/src/sw.js\")",
+      "Bash(git commit -m 'fix: Make week illustrations fully visible in cards *)"
+    ]
+  }
+}
