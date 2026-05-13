@@ -259,6 +259,7 @@ const Router = {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     GoodieApp._updateActiveLinks(hash);
+    trackEvent('navigation', 'page_view', hash);
   },
 
   navigate(path) {
@@ -1613,6 +1614,9 @@ const GoodieApp = {
     this._updateFooterYear();
     this._setupKeyboardNav();
     this._setupSwipeNav();
+    this._setupKeyboardShortcuts();
+    this._setupOfflineBanner();
+    this._setupDarkMode();
     Router.init();
   },
 
@@ -1751,16 +1755,22 @@ const GoodieApp = {
       completeBtn.addEventListener('click', () => {
         const dayNum = parseInt(completeBtn.dataset.day);
         Progress.markDayCompleteQuiet(dayNum);
-        _launchConfetti();
+        _launchConfetti(dayNum === 30);
         _showToast(dayNum < 30
           ? `Day ${dayNum} done! Keep glowing — Day ${dayNum + 1} is next.`
           : 'Day 30 complete! You did it. Welcome to the glow side!', 'success');
         completeBtn.disabled = true;
         completeBtn.innerHTML = '<svg data-lucide="check" aria-hidden="true"></svg> Day Complete!';
         if (window.lucide) window.lucide.createIcons();
-        setTimeout(() => {
-          Router.navigate(dayNum < 30 ? `/day/${dayNum + 1}` : '/progress');
-        }, 2200);
+
+        trackEvent('progress', 'day_complete', 'day_' + dayNum);
+        this._checkMilestone(dayNum);
+
+        if (dayNum === 30) {
+          setTimeout(() => this._showCompletionModal(), 1800);
+        } else {
+          setTimeout(() => Router.navigate(`/day/${dayNum + 1}`), 2200);
+        }
       });
     }
 
@@ -1773,6 +1783,7 @@ const GoodieApp = {
         _compressImage(file, (dataUrl) => {
           try {
             Storage.set(`photo_day${dayNum}`, dataUrl);
+            trackEvent('engagement', 'photo_upload', 'day_' + dayNum);
             Views.renderDay(dayNum); // re-render to show preview
           } catch {
             _showToast('Photo too large to save. Try a smaller image.', 'warning');
@@ -1790,11 +1801,12 @@ const GoodieApp = {
       });
     });
 
-    // FAQ search (help page)
+    // FAQ search (help page) — debounced to avoid jank on slow devices
     const faqSearch = document.getElementById('faq-search');
     if (faqSearch) {
-      faqSearch.addEventListener('input', () => {
+      faqSearch.addEventListener('input', _debounce(() => {
         const query = faqSearch.value.trim().toLowerCase();
+        if (query) trackEvent('help', 'faq_search', query);
         const items = document.querySelectorAll('.faq-item');
         const cats  = document.querySelectorAll('.faq-category');
         const empty = document.getElementById('faq-empty');
@@ -1811,7 +1823,7 @@ const GoodieApp = {
         });
 
         if (empty) empty.hidden = visible > 0;
-      });
+      }, 200));
     }
 
     // Help contact form → pre-filled WhatsApp
@@ -1891,6 +1903,218 @@ const GoodieApp = {
     Views.renderDay(dayNumber);
   },
 
+  // ── Keyboard shortcuts (?, h, n, p, Esc) ────
+  _setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+      const tag = document.activeElement?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      const hash  = window.location.hash;
+      const isDay = hash.startsWith('#/day/');
+      const day   = isDay ? parseInt(hash.replace('#/day/', '')) : null;
+
+      if (e.key === '?') {
+        e.preventDefault();
+        this._toggleShortcutsModal();
+      } else if (e.key === 'h') {
+        e.preventDefault();
+        Router.navigate('/');
+      } else if (e.key === 'n' && isDay && day < 30) {
+        e.preventDefault();
+        Router.navigate(`/day/${day + 1}`);
+      } else if (e.key === 'p' && isDay && day > 1) {
+        e.preventDefault();
+        Router.navigate(`/day/${day - 1}`);
+      } else if (e.key === 'Escape') {
+        this._closeShortcutsModal();
+        this._closeCompletionModal();
+      }
+    });
+  },
+
+  _toggleShortcutsModal() {
+    const existing = document.getElementById('shortcuts-modal');
+    if (existing) { existing.remove(); return; }
+    const modal = document.createElement('div');
+    modal.id = 'shortcuts-modal';
+    modal.className = 'shortcuts-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Keyboard shortcuts');
+    modal.innerHTML = `
+      <div class="shortcuts-modal__backdrop"></div>
+      <div class="shortcuts-modal__panel" tabindex="-1">
+        <div class="shortcuts-modal__header">
+          <h3>Keyboard Shortcuts</h3>
+          <button class="shortcuts-modal__close" aria-label="Close shortcuts" id="sc-close">
+            <svg data-lucide="x" aria-hidden="true"></svg>
+          </button>
+        </div>
+        <ul class="shortcuts-list">
+          <li><kbd>?</kbd><span>Show / hide this panel</span></li>
+          <li><kbd>h</kbd><span>Go to Home</span></li>
+          <li><kbd>n</kbd><span>Next day (on a day page)</span></li>
+          <li><kbd>p</kbd><span>Previous day (on a day page)</span></li>
+          <li><kbd>→</kbd><span>Next day (on a day page)</span></li>
+          <li><kbd>←</kbd><span>Previous day (on a day page)</span></li>
+          <li><kbd>Esc</kbd><span>Close any open panel or modal</span></li>
+        </ul>
+      </div>`;
+    document.body.appendChild(modal);
+    if (window.lucide) window.lucide.createIcons();
+    modal.querySelector('.shortcuts-modal__backdrop').addEventListener('click', () => modal.remove());
+    modal.querySelector('#sc-close').addEventListener('click', () => modal.remove());
+    requestAnimationFrame(() => modal.classList.add('is-visible'));
+    modal.querySelector('.shortcuts-modal__panel').focus();
+  },
+
+  _closeShortcutsModal() {
+    const m = document.getElementById('shortcuts-modal');
+    if (m) m.remove();
+  },
+
+  // ── Offline / online banner ──────────────────
+  _setupOfflineBanner() {
+    const show = () => {
+      if (document.getElementById('offline-banner')) return;
+      const bar = document.createElement('div');
+      bar.id = 'offline-banner';
+      bar.className = 'offline-banner';
+      bar.setAttribute('role', 'alert');
+      bar.innerHTML = `
+        <svg data-lucide="wifi-off" aria-hidden="true"></svg>
+        <span>You're offline. Your progress is saved locally — the guide still works fully.</span>
+        <button class="offline-banner__close" aria-label="Dismiss" id="offline-dismiss">
+          <svg data-lucide="x" aria-hidden="true"></svg>
+        </button>`;
+      document.body.appendChild(bar);
+      if (window.lucide) window.lucide.createIcons();
+      bar.querySelector('#offline-dismiss').addEventListener('click', () => bar.remove());
+      requestAnimationFrame(() => bar.classList.add('is-visible'));
+    };
+    const hide = () => {
+      const bar = document.getElementById('offline-banner');
+      if (bar) bar.remove();
+      _showToast('Back online!', 'success');
+    };
+    window.addEventListener('offline', show);
+    window.addEventListener('online',  hide);
+    if (!navigator.onLine) show();
+  },
+
+  // ── Dark mode toggle ─────────────────────────
+  _setupDarkMode() {
+    const saved = Storage.get('dark_mode');
+    if (saved) document.documentElement.setAttribute('data-theme', 'dark');
+
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+    const btn = document.createElement('button');
+    btn.id = 'dark-mode-toggle';
+    btn.className = 'nav__theme-btn';
+    const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+    const sync   = () => {
+      btn.setAttribute('aria-label', isDark() ? 'Switch to light mode' : 'Switch to dark mode');
+      btn.innerHTML = `<svg data-lucide="${isDark() ? 'sun' : 'moon'}" aria-hidden="true"></svg>`;
+      if (window.lucide) window.lucide.createIcons();
+    };
+    sync();
+    nav.insertBefore(btn, nav.querySelector('.nav__toggle'));
+    btn.addEventListener('click', () => {
+      if (isDark()) {
+        document.documentElement.removeAttribute('data-theme');
+        Storage.remove('dark_mode');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        Storage.set('dark_mode', '1');
+      }
+      sync();
+      trackEvent('ui', 'dark_mode_toggle', isDark() ? 'dark' : 'light');
+    });
+  },
+
+  // ── Milestone toasts (weeks, Day 15) ─────────
+  _checkMilestone(dayNum) {
+    const weeks = { 7: 'Week 1', 14: 'Week 2', 21: 'Week 3', 28: 'Week 4' };
+    if (weeks[dayNum]) {
+      setTimeout(() => _showToast(`${weeks[dayNum]} complete! You're glowing! ✦`, 'success'), 2700);
+      trackEvent('milestone', 'week_complete', weeks[dayNum]);
+    }
+    if (dayNum === 15) {
+      setTimeout(() => _showToast('Halfway there! Day 15 done — your skin is already changing.', 'success'), 2700);
+      trackEvent('milestone', 'halfway', 'day_15');
+    }
+  },
+
+  // ── Day 30 completion modal ───────────────────
+  _showCompletionModal() {
+    if (document.getElementById('completion-modal')) return;
+    const streak = Progress.calculateStreak();
+    const waText = encodeURIComponent(
+      'I just completed the Goodie 30-Day Glow Guide! 30 days of consistent skincare done ✨ #GoodieGlowUp'
+    );
+    const modal = document.createElement('div');
+    modal.id = 'completion-modal';
+    modal.className = 'completion-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'cm-title');
+    modal.innerHTML = `
+      <div class="completion-modal__backdrop"></div>
+      <div class="completion-modal__panel" tabindex="-1">
+        <div class="completion-modal__sparks">✦ ✦ ✦</div>
+        <div class="completion-modal__icon">
+          <svg data-lucide="award" aria-hidden="true"></svg>
+        </div>
+        <h2 id="cm-title" class="completion-modal__title">30 Days Complete!</h2>
+        <p class="completion-modal__sub">
+          You've finished the <strong>Goodie Glow Guide</strong>. Your commitment, your skin,
+          and your glow — all real. We are so proud of you. 🌟
+        </p>
+        <div class="completion-modal__stats">
+          <div class="completion-modal__stat">
+            <strong>30</strong><span>Days Done</span>
+          </div>
+          <div class="completion-modal__stat">
+            <strong>${streak}</strong><span>Day Streak</span>
+          </div>
+        </div>
+        <div class="completion-modal__actions">
+          <a href="https://wa.me/2348063214942?text=${waText}"
+             class="btn btn--whatsapp" target="_blank" rel="noopener noreferrer">
+            <svg data-lucide="message-circle" aria-hidden="true"></svg>
+            Share on WhatsApp
+          </a>
+          <button class="btn btn--primary" id="cm-progress">
+            <svg data-lucide="bar-chart-2" aria-hidden="true"></svg>
+            See My Progress
+          </button>
+        </div>
+        <button class="completion-modal__dismiss" id="cm-dismiss" aria-label="Close">
+          <svg data-lucide="x" aria-hidden="true"></svg>
+        </button>
+      </div>`;
+    document.body.appendChild(modal);
+    if (window.lucide) window.lucide.createIcons();
+
+    const close = () => modal.remove();
+    modal.querySelector('.completion-modal__backdrop').addEventListener('click', close);
+    modal.querySelector('#cm-dismiss').addEventListener('click', close);
+    modal.querySelector('#cm-progress').addEventListener('click', () => {
+      close();
+      Router.navigate('/progress');
+    });
+    requestAnimationFrame(() => modal.classList.add('is-visible'));
+    modal.querySelector('.completion-modal__panel').focus();
+    trackEvent('milestone', 'day_30_complete', 'modal_shown');
+  },
+
+  _closeCompletionModal() {
+    const m = document.getElementById('completion-modal');
+    if (m) m.remove();
+  },
+
   // ── Footer year ─────────────────────────────
   _updateFooterYear() {
     const el = document.getElementById('footer-year');
@@ -1924,10 +2148,11 @@ function _showToast(message, type) {
   toast._t = setTimeout(function() { toast.classList.remove('is-visible'); }, 3500);
 }
 
-// Confetti burst
-function _launchConfetti() {
+// Confetti burst (pass intense=true on Day 30 for extra celebration)
+function _launchConfetti(intense) {
+  var count  = intense ? 160 : 60;
   var colors = ['#8B6F47', '#D4AF37', '#6B8E6F', '#FAF8F5', '#C47A2B', '#ffffff'];
-  for (var i = 0; i < 60; i++) {
+  for (var i = 0; i < count; i++) {
     (function(i) {
       var p = document.createElement('div');
       p.className = 'confetti-particle';
@@ -1965,6 +2190,25 @@ function _compressImage(file, callback) {
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
+}
+
+
+// Lightweight analytics stub — swap body for GA4/Plausible later
+function trackEvent(category, action, label) {
+  try {
+    console.log('[Goodie]', category, '|', action + (label ? ' | ' + label : ''));
+    // GA4: gtag('event', action, { event_category: category, event_label: label });
+  } catch (e) { /* never interrupt the user */ }
+}
+
+// Returns a debounced version of fn (fires after ms of silence)
+function _debounce(fn, ms) {
+  var t;
+  return function () {
+    clearTimeout(t);
+    var args = arguments, ctx = this;
+    t = setTimeout(function () { fn.apply(ctx, args); }, ms);
+  };
 }
 
 
