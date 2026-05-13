@@ -231,6 +231,16 @@ const Progress = {
 
 
 // ─────────────────────────────────────────────
+// ILLUSTRATION HELPER
+// ─────────────────────────────────────────────
+function _getStepIllustration(stepSlug) {
+  const illu = window.GoodieIllustrations;
+  if (!illu) return '';
+  return illu[stepSlug] || illu['default'] || '';
+}
+
+
+// ─────────────────────────────────────────────
 // ROUTER
 // ─────────────────────────────────────────────
 const Router = {
@@ -324,8 +334,10 @@ const Views = {
         return `<div class="week-card__day-dot ${cls}" aria-hidden="true"></div>`;
       }).join('');
 
+      const weekIllu = window.GoodieIllustrations?.week?.[week.week] || '';
       return `
         <article class="week-card animate-slide-up" style="animation-delay:${(week.week - 1) * 80}ms">
+          ${weekIllu ? `<div class="week-card__illustration" aria-hidden="true">${weekIllu}</div>` : ''}
           <p class="week-card__number">Week ${week.week}</p>
           <h3 class="week-card__title">${week.title}</h3>
           <p class="week-card__focus">${week.focus}</p>
@@ -494,33 +506,37 @@ const Views = {
 
     // ── Step item builder ──────────────────────
     const buildStepItem = (step, period) => {
-      const done  = checks[period]?.includes(step.step) ?? false;
-      const id    = `chk-${dayNumber}-${period}-${step.step}`;
+      const done     = checks[period]?.includes(step.step) ?? false;
+      const id       = `chk-${dayNumber}-${period}-${step.step}`;
+      const illuSvg  = _getStepIllustration(step.step);
       return `
         <li class="routine-checklist__item">
-          <label class="checkbox-item ${done ? 'is-checked' : ''}" for="${id}">
-            <input
-              class="checkbox-item__input routine-checklist__input"
-              type="checkbox"
-              id="${id}"
-              ${done ? 'checked' : ''}
-              ${isComplete ? 'disabled' : ''}
-              data-day="${dayNumber}"
-              data-period="${period}"
-              data-step="${step.step}"
-            >
-            <span class="checkbox-item__label">
-              <span class="step-name">${_cap(step.step.replace(/-/g,' '))} — ${step.product}</span>
-              <span class="step-meta">${step.duration}</span>
-            </span>
-          </label>
-          <details class="step-details-panel"${done ? ' open' : ''}>
-            <summary aria-label="How to: ${step.product}">
-              <span>How to</span>
-              <svg data-lucide="chevron-down" aria-hidden="true"></svg>
-            </summary>
-            <p class="step-details-panel__body">${step.instructions}</p>
-          </details>
+          ${illuSvg ? `<div class="step-visual" aria-hidden="true">${illuSvg}</div>` : ''}
+          <div class="step-body">
+            <label class="checkbox-item ${done ? 'is-checked' : ''}" for="${id}">
+              <input
+                class="checkbox-item__input routine-checklist__input"
+                type="checkbox"
+                id="${id}"
+                ${done ? 'checked' : ''}
+                ${isComplete ? 'disabled' : ''}
+                data-day="${dayNumber}"
+                data-period="${period}"
+                data-step="${step.step}"
+              >
+              <span class="checkbox-item__label">
+                <span class="step-name">${_cap(step.step.replace(/-/g,' '))} — ${step.product}</span>
+                <span class="step-meta">${step.duration}</span>
+              </span>
+            </label>
+            <details class="step-details-panel"${done ? ' open' : ''}>
+              <summary aria-label="How to: ${step.product}">
+                <span>How to</span>
+                <svg data-lucide="chevron-down" aria-hidden="true"></svg>
+              </summary>
+              <p class="step-details-panel__body">${step.instructions}</p>
+            </details>
+          </div>
         </li>`;
     };
 
