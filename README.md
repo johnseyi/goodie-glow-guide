@@ -41,23 +41,15 @@ Or install once globally: `npm install -g http-server` then `http-server src -p 
 
 The guide requires an access code. Customers see a full-screen gate until they enter a valid code, which is then saved to localStorage so they stay unlocked.
 
-### Current Codes
-
-Edit `src/js/app.js` → `AccessControl.validCodes[]`:
-
-| Code | Notes |
-|------|-------|
-| `GOODIE2024` | Master code |
-| `GLOW30DAYS` | Alternative |
-| `SKINCARE2024` | Alternative |
-
-Codes are **case-insensitive** — customers can type in any case.
+> **Note:** Valid codes are kept out of this README and version history — see the maintainer for current codes. Codes are case-insensitive.
 
 ### Changing Codes
 
 1. Open `src/js/app.js`
-2. Edit the `validCodes` array in `AccessControl`
+2. Edit the `validCodes` array in `AccessControl` (not committed with real values in this repo's history going forward)
 3. Deploy — customers with old codes will need the new one
+
+> **Known limitation:** this is a client-side-only gate (no backend), so the active codes are always visible to anyone who opens browser dev tools on the live site. It stops casual sharing but isn't real security. If that ever matters more than convenience, move validation to a small serverless function so codes never ship to the client.
 
 ### Generating a Code for One Customer
 

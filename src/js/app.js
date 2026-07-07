@@ -2431,9 +2431,9 @@ const AccessControl = {
   // Edit this array to add, remove, or rotate codes.
   // Codes are case-insensitive — customers can type in any case.
   validCodes: [
-    'GOODIE2024',
-    'GLOW30DAYS',
-    'SKINCARE2024'
+    'GG-1E1O32FS',
+    'GG-TRKEEP4I',
+    'GG-4OE4AJX9'
   ],
 
   hasAccess() {
